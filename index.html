@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ateneo Blue Repertory - The premier musical theatre organization of Ateneo de Manila University">
+    <meta name="keywords" content="blueREP, Ateneo, musical theatre, theater, Philippines">
+    <meta name="author" content="Ateneo Blue Repertory">
+    <title>Ateneo Blue Repertory - Premier Musical Theatre Organization</title>
+    
+    <!-- Favicon -->
+            <link rel="icon" type="image/png" href="/black_favicon.png">
+        <link rel="shortcut icon" type="image/png" href="/black_favicon.png">
+        <link rel="apple-touch-icon" href="/black_favicon.png">
+        <link rel="icon" type="image/png" href="/black_favicon.png">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Fonts (Fallback to Inter) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* Font Family Definitions */
+        .font-fjalla {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .font-lehigh {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        
+        .font-proxima {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        
+        .font-proxima-bold {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-proxima-semibold {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+    </style>
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Custom CSS Variables */
+        :root {
+            --bluerep-blue: #0e143c;
+            --light-purple: #ededf7;
+            --gradient: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);
+        }
+        
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--bluerep-blue);
+            overflow-x: hidden;
+        }
+        
+        /* Custom Typography */
+        .font-fjalla {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-lehigh {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        
+        .font-proxima {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom Colors */
+        .bg-bluerep-blue {
+            background-color: var(--bluerep-blue);
+        }
+        
+        .bg-light-purple {
+            background-color: var(--light-purple);
+        }
+        
+        .text-bluerep-blue {
+            color: var(--bluerep-blue);
+        }
+        
+        .bg-gradient {
+            background: var(--gradient);
+        }
+        
+        /* Navigation Styles */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #ffffff;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            color: #ffffff !important;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Add black background to navbar */
+        header.bg-gradient {
+            background: #000000;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        /* Hero Section */
+        .hero-gradient {
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(14, 20, 60, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(14, 20, 60, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(14, 20, 60, 0.08) 0%, transparent 70%);
+            animation: spotlight 8s ease-in-out infinite alternate;
+        }
+        
+        @keyframes spotlight {
+            0% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero-title {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 4px 8px rgba(14, 20, 60, 0.2));
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-tagline {
+            font-size: clamp(1.125rem, 4vw, 1.5rem);
+            line-height: 1.4;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            text-shadow: 0 2px 4px rgba(14, 20, 60, 0.1);
+        }
+        
+        .hero-cta {
+            background: var(--bluerep-blue);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--bluerep-blue);
+            box-shadow: 0 4px 16px rgba(14, 20, 60, 0.3);
+        }
+        
+        .hero-cta:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 32px rgba(14, 20, 60, 0.4), 0 0 0 4px rgba(14, 20, 60, 0.1);
+            background: white;
+            color: var(--bluerep-blue);
+        }
+        
+        .hero-cta:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        /* Poster Grid Styles */
+        .poster-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 8rem;
+            padding: 4rem;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .poster-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .poster-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            filter: blur(8px) brightness(0.7);
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+        
+        /* Responsive Poster Grid */
+        @media (max-width: 1024px) {
+            .poster-grid {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                gap: 6rem;
+                padding: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .poster-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                gap: 4rem;
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .poster-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                gap: 2rem;
+                padding: 1rem;
+            }
+            
+            .poster-image {
+                filter: blur(6px) brightness(0.8);
+            }
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: var(--bluerep-blue);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--bluerep-blue);
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--bluerep-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 20, 60, 0.2);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-secondary:hover {
+            background: #ffffff;
+            color: #000000;
+            transform: translateY(-2px);
+        }
+        
+        /* Show Cards */
+        .show-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .show-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(14, 20, 60, 0.15);
+        }
+        
+        .show-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus Styles */
+        button:focus,
+        a:focus {
+            outline: 2px solid var(--light-purple);
+            outline-offset: 2px;
+        }
+        
+        /* Responsive Images */
+        .responsive-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        
+        /* Section Spacing */
+        section {
+            padding: 60px 0;
+        }
+        
+        @media (min-width: 768px) {
+            section {
+                padding: 80px 0;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            section {
+                padding: 100px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-gradient backdrop-blur-sm border-b border-white/20">
+        <nav class="w-full px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#home" class="cursor-pointer">
+                        <img src="/white_logo.svg" alt="blueREP Logo" class="h-16 w-auto">
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">Home</a>
+                    <a href="#about" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">About</a>
+                    <a href="#shows" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">Shows</a>
+                    <a href="#join" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">Join Us</a>
+                    <a href="mailto:contact@bluerep.org" class="btn-secondary">Contact</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2" aria-label="Toggle mobile menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-black shadow-lg z-50">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <a href="#home" class="cursor-pointer">
+                        <img src="/white_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
+                    </a>
+                    <button id="close-menu-btn" class="p-2 text-white" aria-label="Close mobile menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <a href="#home" class="nav-link font-proxima text-white py-2">Home</a>
+                    <a href="#about" class="nav-link font-proxima text-white py-2">About</a>
+                    <a href="#shows" class="nav-link font-proxima text-white py-2">Shows</a>
+                    <a href="#join" class="nav-link font-proxima text-white py-2">Join Us</a>
+                    <a href="mailto:contact@bluerep.org" class="btn-secondary mt-4">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient min-h-screen flex items-center justify-center text-bluerep-blue relative overflow-hidden bg-black">
+        <!-- Background Poster Grid -->
+        <div class="absolute inset-0 poster-grid">
+            <div class="poster-item">
+                <img src="/card_1.jpg" alt="Show Card 1" class="poster-image">
+            </div>
+            <div class="poster-item">
+                <img src="/card_2.jpg" alt="Show Card 2" class="poster-image">
+            </div>
+            <div class="poster-item">
+                <img src="/card_3.jpg" alt="Show Card 3" class="poster-image">
+            </div>
+            <div class="poster-item">
+                <img src="/card_4.jpg" alt="Show Card 4" class="poster-image">
+            </div>
+            <div class="poster-item">
+                <img src="/card_5.jpg" alt="Show Card 5" class="poster-image">
+            </div>
+            <div class="poster-item">
+                <img src="/card_6.jpg" alt="Show Card 6" class="poster-image">
+            </div>
+            <div class="poster-item">
+                <img src="/card_7.jpg" alt="Show Card 7" class="poster-image">
+            </div>
+            <div class="poster-item">
+                <img src="/card_8.jpg" alt="Show Card 8" class="poster-image">
+            </div>
+        </div>
+        
+        <!-- Semi-transparent Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-30 z-5"></div>
+        
+        <!-- Foreground Content -->
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="hero-content fade-in">
+                <img src="/white_hero_title.png" alt="Ateneo Blue Repertory" class="hero-title mb-6 max-w-full h-auto mx-auto block">
+                <p class="hero-tagline font-lehigh max-w-4xl mx-auto" style="color: #ffffff; margin-top: -3rem;">
+                    BE ANYTHING, BE BLUEREP
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="max-w-6xl mx-auto fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Left Side - Image -->
+                    <div class="order-2 lg:order-1">
+                        <img src="/aboutus.jpg" alt="About blueREP" class="w-full h-auto rounded-lg shadow-lg">
+                    </div>
+                    
+                    <!-- Right Side - Content -->
+                    <div class="order-1 lg:order-2">
+                        <h2 class="text-3xl md:text-4xl font-lehigh text-black mb-6">
+                            About Us
+                        </h2>
+                        <p class="text-lg md:text-xl font-proxima text-black leading-relaxed">
+                            Ateneo Blue Repertory (blueREP) is the <span class="font-bold" style="color: #0e143c;">premier musical theatre organization</span> of the Ateneo de Manila University.<br><br>
+                            Today, blueREP continues to hone its members in the fields of <span class="font-bold" style="color: #0e143c;">performance, production, and theatre management</span>, aiming to mold a holistic and disciplined community of artists within the university. With passion, the organization endeavors to immerse its audiences in shows that communicate relevant messages, and to inspire in them creativity, joy, and imagination unique to musical theatre.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shows Section -->
+    <section id="shows" class="bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-lehigh text-bluerep-blue mb-4">
+                    Our Productions
+                </h2>
+                <p class="text-lg font-proxima text-gray-600 max-w-2xl mx-auto">
+                    Discover our latest performances and upcoming shows
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Show Card 1 -->
+                <div class="show-card bg-white shadow-lg fade-in">
+                    <div class="show-image">
+                        Spring Awakening 2024
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Spring Awakening</h3>
+                        <p class="text-gray-600 font-proxima">2024</p>
+                    </div>
+                </div>
+                
+                <!-- Show Card 2 -->
+                <div class="show-card bg-white shadow-lg fade-in">
+                    <div class="show-image">
+                        Rent 2023
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Rent</h3>
+                        <p class="text-gray-600 font-proxima">2023</p>
+                    </div>
+                </div>
+                
+                <!-- Show Card 3 -->
+                <div class="show-card bg-white shadow-lg fade-in">
+                    <div class="show-image">
+                        Les Misérables 2023
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Les Misérables</h3>
+                        <p class="text-gray-600 font-proxima">2023</p>
+                    </div>
+                </div>
+                
+                <!-- Show Card 4 -->
+                <div class="show-card bg-white shadow-lg fade-in">
+                    <div class="show-image">
+                        Wicked 2022
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Wicked</h3>
+                        <p class="text-gray-600 font-proxima">2022</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Us Section -->
+    <section id="join" class="bg-bluerep-blue text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center fade-in">
+                <h2 class="text-3xl md:text-4xl font-lehigh mb-6">
+                    Join Our Community
+                </h2>
+                <p class="text-lg md:text-xl font-proxima mb-8 leading-relaxed">
+                    Ready to be part of something extraordinary? Join Ateneo Blue Repertory and discover your passion 
+                    for musical theatre. Whether you're interested in acting, singing, dancing, or behind-the-scenes 
+                    production work, there's a place for you in our family.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="mailto:contact@bluerep.org" class="btn-secondary">
+                        Contact Us
+                    </a>
+                    <a href="#about" class="btn-primary">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Logo and Description -->
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-fjalla mb-4">blueREP</h3>
+                    <p class="font-proxima text-gray-300">
+                        The premier musical theatre organization of Ateneo de Manila University
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-lg font-lehigh mb-4">Quick Links</h4>
+                    <ul class="space-y-2 font-proxima text-gray-300">
+                        <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="#shows" class="hover:text-white transition-colors">Shows</a></li>
+                        <li><a href="#join" class="hover:text-white transition-colors">Join Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-lg font-lehigh mb-4">Contact</h4>
+                    <div class="font-proxima text-gray-300 space-y-2">
+                        <p>Email: <a href="mailto:contact@bluerep.org" class="hover:text-white transition-colors">contact@bluerep.org</a></p>
+                        <p>Ateneo de Manila University</p>
+                        <p>Quezon City, Philippines</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="font-proxima text-gray-400">
+                    © 2024 Ateneo Blue Repertory. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+        }
+        
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('open');
+        }
+        
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        closeMenuBtn.addEventListener('click', closeMobileMenu);
+        
+        // Close mobile menu when clicking on links
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        
+        // Smooth scrolling for navigation links
+        const navLinks = document.querySelectorAll('a[href^="#"]');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetSection.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all fade-in elements
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Active navigation highlighting
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Initialize active nav on page load
+        updateActiveNav();
+        
+        // Add loading animation for hero section
+        window.addEventListener('load', function() {
+            const heroContent = document.querySelector('#home .fade-in');
+            if (heroContent) {
+                setTimeout(() => {
+                    heroContent.classList.add('visible');
+                }, 100);
+            }
+        });
+        
+        // Keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMobileMenu();
+            }
+        });
+        
+        // Touch-friendly interactions
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartY - touchEndY;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe up - could be used for navigation
+                } else {
+                    // Swipe down - could be used for navigation
+                }
+            }
+        }
+    </script>
+</body>
+</html> 
