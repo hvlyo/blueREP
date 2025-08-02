@@ -26,6 +26,27 @@
             --gradient: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);
         }
         
+        /* Base Styles */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--bluerep-blue);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
         /* Font Mappings */
         .font-fjalla { font-family: 'Inter', sans-serif; font-weight: 700; }
         .font-lehigh { font-family: 'Inter', sans-serif; font-weight: 600; }
@@ -128,8 +149,9 @@
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            height: 100vh;
-            width: 100vw;
+            height: 100vh !important;
+            min-height: 100vh !important;
+            width: 100vw !important;
             right: 0;
             top: 0;
             display: flex;
@@ -138,6 +160,8 @@
             align-items: flex-start;
             padding: 1.5rem;
             box-sizing: border-box;
+            position: fixed;
+            z-index: 9999;
         }
         
         .mobile-menu.open {
