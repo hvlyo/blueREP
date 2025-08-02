@@ -2,31 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>Buy Tickets - Ateneo Blue Repertory</title>
     <meta name="description" content="Purchase tickets for Ateneo Blue Repertory's upcoming productions and shows.">
     <link rel="icon" type="image/png" href="/assets/black_favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Custom Styles -->
     <style>
+        /* Custom CSS Variables */
         :root {
             --bluerep-blue: #0e143c;
             --light-purple: #ededf7;
             --gradient: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);
         }
         
-        /* Base Styles */
+        /* Base Styles with Cross-Browser Support */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
+            /* iOS Safari viewport height fix */
+            height: 100vh;
+            height: -webkit-fill-available;
+            height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
         }
         
         body {
@@ -35,26 +43,53 @@
             color: var(--bluerep-blue);
             overflow-x: hidden;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
+            /* iOS Safari safe area support */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
         
-        /* Custom Fonts */
-        .font-fjalla { font-family: 'FjallaOne-Regular', 'Inter', sans-serif; }
-        .font-lehigh { font-family: 'Lehigh-Personal-Bold', 'Inter', sans-serif; }
-        .font-proxima { font-family: 'ProximaNova-Regular', 'Inter', sans-serif; }
-        .font-proxima-bold { font-family: 'ProximaNova-Bold', 'Inter', sans-serif; }
-        .font-proxima-semibold { font-family: 'ProximaNova-SemiBold', 'Inter', sans-serif; }
+        /* Custom Typography */
+        .font-fjalla {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-lehigh {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        
+        .font-proxima {
+            font-family: 'Inter', sans-serif;
+        }
         
         /* Custom Colors */
-        .text-bluerep-blue { color: #0e143c; }
-        .bg-bluerep-blue { background-color: #0e143c; }
-        .text-light-purple { color: #ededf7; }
-        .bg-light-purple { background-color: #ededf7; }
+        .bg-bluerep-blue {
+            background-color: var(--bluerep-blue);
+        }
+        
+        .bg-light-purple {
+            background-color: var(--light-purple);
+        }
+        
+        .text-bluerep-blue {
+            color: var(--bluerep-blue);
+        }
+        
+        .bg-gradient {
+            background: var(--gradient);
+        }
         
         /* Navigation Styles */
         .nav-link {
             position: relative;
             transition: color 0.3s ease;
             font-weight: 600;
+            -webkit-transition: color 0.3s ease;
+            -moz-transition: color 0.3s ease;
         }
         
         .nav-link::after {
@@ -66,6 +101,8 @@
             height: 3px;
             background: #0e143c;
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -moz-transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 2px;
         }
         
@@ -79,6 +116,8 @@
             padding: 8px 16px;
             border-radius: 8px;
             transition: all 0.3s ease;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
         }
         
         .nav-link.active::after {
@@ -89,6 +128,7 @@
         #navbar {
             background: transparent;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         #navbar.scrolled {
@@ -96,36 +136,66 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        /* Mobile Menu */
+        /* Mobile Menu - Enhanced Cross-Browser Support */
         .mobile-menu {
             transform: translateX(100%);
+            -webkit-transform: translateX(100%);
+            -moz-transform: translateX(100%);
             transition: transform 0.4s ease-in-out;
+            -webkit-transition: transform 0.4s ease-in-out;
+            -moz-transition: transform 0.4s ease-in-out;
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            /* iOS Safari viewport height fix */
             height: 100vh !important;
+            height: -webkit-fill-available !important;
+            height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
             min-height: 100vh !important;
+            min-height: -webkit-fill-available !important;
             width: 100vw !important;
             right: 0;
             top: 0;
+            display: -webkit-flex;
+            display: -moz-flex;
             display: flex;
+            -webkit-flex-direction: column;
+            -moz-flex-direction: column;
             flex-direction: column;
+            -webkit-justify-content: flex-start;
+            -moz-justify-content: flex-start;
             justify-content: flex-start;
+            -webkit-align-items: flex-start;
+            -moz-align-items: flex-start;
             align-items: flex-start;
+            /* iOS Safari safe area support */
             padding: 1.5rem;
+            padding-top: calc(1.5rem + env(safe-area-inset-top));
+            padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+            padding-left: calc(1.5rem + env(safe-area-inset-left));
+            padding-right: calc(1.5rem + env(safe-area-inset-right));
             box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
             position: fixed;
             z-index: 9999;
+            /* Ensure proper stacking context */
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
         }
         
         .mobile-menu.open {
             transform: translateX(0);
+            -webkit-transform: translateX(0);
+            -moz-transform: translateX(0);
         }
         
         /* Mobile Menu Overlay */
         .mobile-menu-overlay {
             background-color: rgba(0, 0, 0, 0.9);
             transition: opacity 0.3s ease-in-out;
+            -webkit-transition: opacity 0.3s ease-in-out;
+            -moz-transition: opacity 0.3s ease-in-out;
         }
         
         .mobile-menu-overlay.active {
@@ -137,16 +207,30 @@
         .mobile-menu-content {
             width: 100%;
             height: 100%;
+            display: -webkit-flex;
+            display: -moz-flex;
             display: flex;
+            -webkit-flex-direction: column;
+            -moz-flex-direction: column;
             flex-direction: column;
+            -webkit-justify-content: flex-start;
+            -moz-justify-content: flex-start;
             justify-content: flex-start;
+            -webkit-align-items: flex-start;
+            -moz-align-items: flex-start;
             align-items: flex-start;
         }
         
         .mobile-menu-header {
             width: 100%;
+            display: -webkit-flex;
+            display: -moz-flex;
             display: flex;
+            -webkit-justify-content: space-between;
+            -moz-justify-content: space-between;
             justify-content: space-between;
+            -webkit-align-items: center;
+            -moz-align-items: center;
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
@@ -155,7 +239,11 @@
         
         .mobile-menu-nav {
             width: 100%;
+            display: -webkit-flex;
+            display: -moz-flex;
             display: flex;
+            -webkit-flex-direction: column;
+            -moz-flex-direction: column;
             flex-direction: column;
             gap: 0.5rem;
         }
@@ -168,24 +256,61 @@
             letter-spacing: 0.025em;
             padding: 1rem 0;
             transition: all 0.3s ease;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             opacity: 0;
             transform: translateX(20px);
+            -webkit-transform: translateX(20px);
+            -moz-transform: translateX(20px);
             animation: slideInLink 0.4s ease-out forwards;
+            -webkit-animation: slideInLink 0.4s ease-out forwards;
+            -moz-animation: slideInLink 0.4s ease-out forwards;
+            /* Improved touch target size */
+            min-height: 44px;
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: flex;
+            -webkit-align-items: center;
+            -moz-align-items: center;
+            align-items: center;
         }
         
-        .mobile-menu-nav a:nth-child(1) { animation-delay: 0.1s; }
-        .mobile-menu-nav a:nth-child(2) { animation-delay: 0.2s; }
-        .mobile-menu-nav a:nth-child(3) { animation-delay: 0.3s; }
-        .mobile-menu-nav a:nth-child(4) { animation-delay: 0.4s; }
-        .mobile-menu-nav a:nth-child(5) { animation-delay: 0.5s; }
+        .mobile-menu-nav a:nth-child(1) { 
+            animation-delay: 0.1s; 
+            -webkit-animation-delay: 0.1s; 
+            -moz-animation-delay: 0.1s; 
+        }
+        .mobile-menu-nav a:nth-child(2) { 
+            animation-delay: 0.2s; 
+            -webkit-animation-delay: 0.2s; 
+            -moz-animation-delay: 0.2s; 
+        }
+        .mobile-menu-nav a:nth-child(3) { 
+            animation-delay: 0.3s; 
+            -webkit-animation-delay: 0.3s; 
+            -moz-animation-delay: 0.3s; 
+        }
+        .mobile-menu-nav a:nth-child(4) { 
+            animation-delay: 0.4s; 
+            -webkit-animation-delay: 0.4s; 
+            -moz-animation-delay: 0.4s; 
+        }
+        .mobile-menu-nav a:nth-child(5) { 
+            animation-delay: 0.5s; 
+            -webkit-animation-delay: 0.5s; 
+            -moz-animation-delay: 0.5s; 
+        }
         
         .mobile-menu-nav a:hover {
             color: #ededf7;
             transform: translateX(10px);
+            -webkit-transform: translateX(10px);
+            -moz-transform: translateX(10px);
             border-bottom-color: rgba(255, 255, 255, 0.2);
         }
         
+        /* Enhanced Close Button with Better Touch Target */
         .mobile-menu-close {
             background: none;
             border: none;
@@ -193,21 +318,125 @@
             padding: 0.75rem;
             border-radius: 50%;
             transition: all 0.3s ease;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
             cursor: pointer;
+            display: -webkit-flex;
+            display: -moz-flex;
             display: flex;
+            -webkit-align-items: center;
+            -moz-align-items: center;
             align-items: center;
+            -webkit-justify-content: center;
+            -moz-justify-content: center;
             justify-content: center;
+            /* Improved touch target size */
+            min-width: 44px;
+            min-height: 44px;
+            /* Better visual feedback */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
         .mobile-menu-close:hover {
             background-color: rgba(255, 255, 255, 0.1);
             transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+        }
+        
+        .mobile-menu-close:active {
+            transform: scale(0.95);
+            -webkit-transform: scale(0.95);
+            -moz-transform: scale(0.95);
+        }
+        
+        /* Enhanced Mobile Menu Button */
+        #mobile-menu-btn {
+            min-width: 44px;
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
         @keyframes slideInLink {
             to {
                 opacity: 1;
                 transform: translateX(0);
+                -webkit-transform: translateX(0);
+                -moz-transform: translateX(0);
+            }
+        }
+        
+        @-webkit-keyframes slideInLink {
+            to {
+                opacity: 1;
+                -webkit-transform: translateX(0);
+            }
+        }
+        
+        @-moz-keyframes slideInLink {
+            to {
+                opacity: 1;
+                -moz-transform: translateX(0);
+            }
+        }
+        
+        /* iOS Safari Specific Fixes */
+        @supports (-webkit-touch-callout: none) {
+            .mobile-menu {
+                height: -webkit-fill-available !important;
+                min-height: -webkit-fill-available !important;
+            }
+            
+            body {
+                min-height: -webkit-fill-available;
+            }
+        }
+        
+        /* Firefox Specific Fixes */
+        @-moz-document url-prefix() {
+            .mobile-menu {
+                height: 100vh !important;
+                min-height: 100vh !important;
+            }
+        }
+        
+        /* Safari Specific Fixes */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .mobile-menu {
+                height: 100vh !important;
+                min-height: 100vh !important;
+            }
+        }
+        
+        /* High DPI Display Support */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .mobile-menu-close svg,
+            #mobile-menu-btn svg {
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+            }
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            .mobile-menu,
+            .mobile-menu-nav a,
+            .mobile-menu-close,
+            .mobile-menu-overlay {
+                transition: none !important;
+                -webkit-transition: none !important;
+                -moz-transition: none !important;
+                animation: none !important;
+                -webkit-animation: none !important;
+                -moz-animation: none !important;
             }
         }
         
@@ -300,8 +529,8 @@
                 </div>
                 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 text-bluerep-blue" aria-label="Toggle mobile menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-bluerep-blue" aria-label="Toggle mobile menu" type="button" aria-expanded="false" aria-controls="mobile-menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
@@ -312,24 +541,24 @@
         <div id="mobile-menu-overlay" class="mobile-menu-overlay md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none opacity-0 transition-opacity duration-300"></div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50">
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
             <div class="mobile-menu-content">
                 <div class="mobile-menu-header">
-                    <a href="index.html#top" class="cursor-pointer">
+                    <a href="index.html#top" class="cursor-pointer" aria-label="Go to homepage">
                         <img src="/assets/white_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
                     </a>
-                    <button id="close-menu-btn" class="mobile-menu-close" aria-label="Close mobile menu">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="close-menu-btn" class="mobile-menu-close" aria-label="Close mobile menu" type="button">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
-                <nav class="mobile-menu-nav">
-                    <a href="index.html">Home</a>
-                    <a href="about.html">About</a>
-                    <a href="tickets.html">Tickets</a>
-                    <a href="productions.html">Productions</a>
-                    <a href="merchandise.html">Merchandise</a>
+                <nav class="mobile-menu-nav" role="navigation" aria-label="Mobile navigation">
+                    <a href="index.html" aria-label="Go to homepage">Home</a>
+                    <a href="about.html" aria-label="Go to about page">About</a>
+                    <a href="tickets.html" aria-label="Go to tickets page">Tickets</a>
+                    <a href="productions.html" aria-label="Go to productions page">Productions</a>
+                    <a href="merchandise.html" aria-label="Go to merchandise page">Merchandise</a>
                 </nav>
             </div>
         </div>
@@ -408,40 +637,117 @@
 
     <!-- JavaScript -->
     <script>
-        // Mobile Menu Toggle
+        // Mobile Menu Toggle with Enhanced Cross-Browser Support
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const closeMenuBtn = document.getElementById('close-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
         
         function toggleMobileMenu() {
-            mobileMenu.classList.toggle('open');
-            mobileMenuOverlay.classList.toggle('active');
+            const isOpen = mobileMenu.classList.contains('open');
+            
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+        
+        function openMobileMenu() {
+            mobileMenu.classList.add('open');
+            mobileMenuOverlay.classList.add('active');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
             
             // Prevent body scroll when menu is open
-            if (mobileMenu.classList.contains('open')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            
+            // Focus management for accessibility
+            closeMenuBtn.focus();
+            
+            // Trap focus within the menu
+            mobileMenu.addEventListener('keydown', handleMenuKeydown);
         }
         
         function closeMobileMenu() {
             mobileMenu.classList.remove('open');
             mobileMenuOverlay.classList.remove('active');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            
+            // Restore body scroll
             document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            
+            // Return focus to menu button
+            mobileMenuBtn.focus();
+            
+            // Remove focus trap
+            mobileMenu.removeEventListener('keydown', handleMenuKeydown);
         }
         
-        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-        closeMenuBtn.addEventListener('click', closeMobileMenu);
+        function handleMenuKeydown(event) {
+            const focusableElements = mobileMenu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (event.key === 'Escape') {
+                closeMobileMenu();
+            } else if (event.key === 'Tab') {
+                if (event.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        event.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        event.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            }
+        }
+        
+        // Event listeners with cross-browser support
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            // Touch event support for better mobile interaction
+            mobileMenuBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                toggleMobileMenu();
+            }, { passive: false });
+        }
+        
+        if (closeMenuBtn) {
+            closeMenuBtn.addEventListener('click', closeMobileMenu);
+            closeMenuBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                closeMobileMenu();
+            }, { passive: false });
+        }
         
         // Close mobile menu when clicking on overlay
-        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        }
         
         // Close mobile menu when clicking on links
         const mobileMenuLinks = mobileMenu.querySelectorAll('a');
         mobileMenuLinks.forEach(link => {
             link.addEventListener('click', closeMobileMenu);
+            // Touch event support
+            link.addEventListener('touchstart', function(e) {
+                // Allow the link to work normally, just close the menu
+                setTimeout(closeMobileMenu, 100);
+            });
+        });
+        
+        // Handle window resize to close menu on desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768 && mobileMenu.classList.contains('open')) {
+                closeMobileMenu();
+            }
         });
         
         // Fade-in animation on scroll
