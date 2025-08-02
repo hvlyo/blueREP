@@ -73,6 +73,10 @@
             height: 100vh;
             height: -webkit-fill-available;
             height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            /* Ensure proper box sizing */
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
         }
         
         * {
@@ -95,6 +99,9 @@
             padding-bottom: env(safe-area-inset-bottom);
             padding-left: env(safe-area-inset-left);
             padding-right: env(safe-area-inset-right);
+            /* Ensure proper rendering */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         /* Custom Typography */
@@ -187,34 +194,43 @@
             transform: translateX(100%);
             -webkit-transform: translateX(100%);
             -moz-transform: translateX(100%);
+            -ms-transform: translateX(100%);
             transition: transform 0.4s ease-in-out;
             -webkit-transition: transform 0.4s ease-in-out;
             -moz-transition: transform 0.4s ease-in-out;
+            -o-transition: transform 0.4s ease-in-out;
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            /* iOS Safari viewport height fix */
+            /* Enhanced viewport height handling */
             height: 100vh !important;
+            height: 100dvh !important;
             height: -webkit-fill-available !important;
             height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
             min-height: 100vh !important;
+            min-height: 100dvh !important;
             min-height: -webkit-fill-available !important;
             width: 100vw !important;
+            width: 100dvw !important;
             right: 0;
             top: 0;
             display: -webkit-flex;
             display: -moz-flex;
+            display: -ms-flexbox;
             display: flex;
             -webkit-flex-direction: column;
             -moz-flex-direction: column;
+            -ms-flex-direction: column;
             flex-direction: column;
             -webkit-justify-content: flex-start;
             -moz-justify-content: flex-start;
+            -ms-flex-pack: start;
             justify-content: flex-start;
             -webkit-align-items: flex-start;
             -moz-align-items: flex-start;
+            -ms-flex-align: start;
             align-items: flex-start;
-            /* iOS Safari safe area support */
+            /* Enhanced safe area support */
             padding: 1.5rem;
             padding-top: calc(1.5rem + env(safe-area-inset-top));
             padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
@@ -227,13 +243,17 @@
             z-index: 9999;
             /* Ensure proper stacking context */
             -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
             transform-style: preserve-3d;
+            /* Prevent scrolling on body when menu is open */
+            overflow: hidden;
         }
         
         .mobile-menu.open {
             transform: translateX(0);
             -webkit-transform: translateX(0);
             -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
         }
         
         /* Mobile Menu Overlay */
@@ -295,7 +315,7 @@
         }
         
         .mobile-menu-nav a {
-            color: white;
+            color: white !important;
             text-decoration: none;
             font-size: 1.125rem;
             font-weight: 500;
@@ -304,22 +324,44 @@
             transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
             -moz-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             opacity: 0;
             transform: translateX(20px);
             -webkit-transform: translateX(20px);
             -moz-transform: translateX(20px);
+            -ms-transform: translateX(20px);
             animation: slideInLink 0.4s ease-out forwards;
             -webkit-animation: slideInLink 0.4s ease-out forwards;
             -moz-animation: slideInLink 0.4s ease-out forwards;
-            /* Improved touch target size */
+            /* Enhanced touch target size */
             min-height: 44px;
+            min-width: 44px;
             display: -webkit-flex;
             display: -moz-flex;
+            display: -ms-flexbox;
             display: flex;
             -webkit-align-items: center;
             -moz-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
+            /* Ensure text is always visible */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            /* Better touch feedback */
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Ensure links are visible when menu is open */
+        .mobile-menu.open .mobile-menu-nav a {
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+            -webkit-transform: translateX(0) !important;
+            -moz-transform: translateX(0) !important;
+            -ms-transform: translateX(0) !important;
         }
         
         .mobile-menu-nav a:nth-child(1) { 
@@ -349,7 +391,7 @@
         }
         
         .mobile-menu-nav a:hover {
-            color: #ededf7;
+            color: #ededf7 !important;
             transform: translateX(10px);
             -webkit-transform: translateX(10px);
             -moz-transform: translateX(10px);
@@ -360,31 +402,40 @@
         .mobile-menu-close {
             background: none;
             border: none;
-            color: white;
+            color: white !important;
             padding: 0.75rem;
             border-radius: 50%;
             transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
             -moz-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
             cursor: pointer;
             display: -webkit-flex;
             display: -moz-flex;
+            display: -ms-flexbox;
             display: flex;
             -webkit-align-items: center;
             -moz-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
             -webkit-justify-content: center;
             -moz-justify-content: center;
+            -ms-flex-pack: center;
             justify-content: center;
-            /* Improved touch target size */
+            /* Enhanced touch target size */
             min-width: 44px;
             min-height: 44px;
             /* Better visual feedback */
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            /* Ensure visibility */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            /* Better contrast */
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .mobile-menu-close:hover {
@@ -488,10 +539,18 @@
             .mobile-menu {
                 height: -webkit-fill-available !important;
                 min-height: -webkit-fill-available !important;
+                height: 100dvh !important;
+                min-height: 100dvh !important;
             }
             
             body {
                 min-height: -webkit-fill-available;
+                min-height: 100dvh;
+            }
+            
+            html {
+                height: -webkit-fill-available;
+                height: 100dvh;
             }
         }
         
@@ -500,6 +559,7 @@
             .mobile-menu {
                 height: 100vh !important;
                 min-height: 100vh !important;
+                width: 100vw !important;
             }
         }
         
@@ -508,6 +568,17 @@
             .mobile-menu {
                 height: 100vh !important;
                 min-height: 100vh !important;
+                height: 100dvh !important;
+                min-height: 100dvh !important;
+            }
+        }
+        
+        /* Edge/IE Specific Fixes */
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+            .mobile-menu {
+                height: 100vh !important;
+                min-height: 100vh !important;
+                width: 100vw !important;
             }
         }
         
@@ -516,6 +587,8 @@
             .mobile-menu-close svg,
             #mobile-menu-btn svg {
                 -webkit-transform: translateZ(0);
+                -moz-transform: translateZ(0);
+                -ms-transform: translateZ(0);
                 transform: translateZ(0);
             }
         }
@@ -594,9 +667,13 @@
             font-size: clamp(1.125rem, 4vw, 1.5rem);
             line-height: 1.4;
             margin-bottom: 2.5rem;
-            margin-top: -40rem;
+            margin-top: -2rem;
             opacity: 0.9;
-            text-shadow: 0 2px 4px rgba(14, 20, 60, 0.1);
+            text-shadow: 0 2px 4px rgba(14, 20, 60, 0.3), 0 1px 2px rgba(0, 0, 0, 0.5);
+            color: #ffffff !important;
+            /* Ensure text is always visible */
+            font-weight: 600;
+            letter-spacing: 0.02em;
         }
         
         .hero-cta {
@@ -974,6 +1051,7 @@
         #news-next {
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            color: #0e143c !important;
         }
         
         #news-prev:hover,
@@ -1064,6 +1142,7 @@
         /* Ensure text is always readable */
         #moments .text-white {
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            color: #ffffff !important;
         }
         
         #moments .drop-shadow-lg {
@@ -1092,6 +1171,7 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 2px solid rgba(255, 255, 255, 0.5);
+            color: #ffffff !important;
         }
         
         #carousel-prev:hover,
@@ -1136,6 +1216,90 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        
+        /* Enhanced text visibility and readability */
+        .text-white {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .text-black {
+            color: #000000 !important;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Ensure footer text is always visible */
+        footer .text-white {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        footer a {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Enhanced button visibility */
+        .btn-primary,
+        .btn-secondary {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        /* Ensure navigation text is visible */
+        .nav-link {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Enhanced carousel text visibility */
+        #carousel-prev,
+        #carousel-next {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        #news-prev,
+        #news-next {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Ensure all headings are visible */
+        h1, h2, h3, h4, h5, h6 {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Enhanced mobile menu text */
+        .mobile-menu-nav a {
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+            font-weight: 600;
+        }
+        
+        .mobile-menu-close {
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+        }
+        
+        /* Fallback for when animations are disabled or fail */
+        @media (prefers-reduced-motion: reduce) {
+            .mobile-menu-nav a {
+                opacity: 1 !important;
+                transform: translateX(0) !important;
+                -webkit-transform: translateX(0) !important;
+                -moz-transform: translateX(0) !important;
+                -ms-transform: translateX(0) !important;
+                animation: none !important;
+                -webkit-animation: none !important;
+                -moz-animation: none !important;
+            }
+        }
+        
+        /* Additional fallback for browsers that don't support animations */
+        .mobile-menu-nav a {
+            /* Fallback opacity in case animation doesn't work */
+            opacity: 0;
+        }
+        
+        .mobile-menu.open .mobile-menu-nav a {
+            opacity: 1 !important;
+        }
     </style>
 </head>
 <body>
@@ -1172,7 +1336,7 @@
         </nav>
         
         <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu-overlay" class="mobile-menu-overlay md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none opacity-0 transition-opacity duration-300"></div>
+        <div id="mobile-menu-overlay" class="mobile-menu-overlay md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none opacity-0 transition-opacity duration-300" aria-hidden="true"></div>
         
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
@@ -1445,13 +1609,13 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white">
+    <footer class="bg-gray-900 text-white" style="background: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%); position: relative;">
         <div class="container mx-auto px-4 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Logo and Description -->
                 <div class="text-center md:text-left">
                     <img src="/assets/footer_white.png" alt="blueREP Logo" class="h-24 w-auto mb-4 mx-auto md:mx-0">
-                    <p class="font-proxima text-gray-300">
+                    <p class="font-proxima text-white opacity-90">
                         The premier musical theatre organization of Ateneo de Manila University
                     </p>
                 </div>
@@ -1462,7 +1626,7 @@
                 <!-- Contact Info -->
                 <div class="text-center md:text-left">
                     <h4 class="text-lg font-lehigh mb-4">Contact</h4>
-                    <div class="font-proxima text-gray-300 space-y-2">
+                    <div class="font-proxima text-white opacity-90 space-y-2">
                         <p>Email: <a href="mailto:bluerep.house@gmail.com" class="hover:text-white transition-colors">bluerep.house@gmail.com</a></p>
                         <p>MVP 301, Manuel V. Pangilinan Building</p>
                         <p>Ateneo de Manila University</p>
@@ -1473,7 +1637,7 @@
             
             <!-- Bottom Bar -->
             <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="font-proxima text-gray-400">
+                <p class="font-proxima text-white opacity-75">
                     © 2025 Ateneo Blue Repertory. All rights reserved.
                 </p>
             </div>
@@ -1488,8 +1652,49 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
         
+        // Enhanced cross-browser event handling
+        function addCrossBrowserEventListener(element, event, handler, options = {}) {
+            if (element) {
+                element.addEventListener(event, handler, options);
+                // Add touch events for mobile
+                if (event === 'click') {
+                    element.addEventListener('touchstart', handler, { ...options, passive: false });
+                }
+            }
+        }
+        
+        // Event listeners with enhanced cross-browser support
+        if (mobileMenuBtn) {
+            addCrossBrowserEventListener(mobileMenuBtn, 'click', toggleMobileMenu);
+        }
+        
+        if (closeMenuBtn) {
+            addCrossBrowserEventListener(closeMenuBtn, 'click', closeMobileMenu);
+        }
+        
+        // Close mobile menu when clicking on overlay
+        if (mobileMenuOverlay) {
+            addCrossBrowserEventListener(mobileMenuOverlay, 'click', closeMobileMenu);
+        }
+        
+        // Close mobile menu when clicking on links
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            addCrossBrowserEventListener(link, 'click', () => {
+                setTimeout(closeMobileMenu, 100);
+            });
+        });
+        
+        // Close mobile menu on window resize (if screen becomes desktop)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768 && mobileMenu.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        });
+        
         function toggleMobileMenu() {
             const isOpen = mobileMenu.classList.contains('open');
+            console.log('Toggle mobile menu - isOpen:', isOpen);
             
             if (isOpen) {
                 closeMobileMenu();
@@ -1499,34 +1704,60 @@
         }
         
         function openMobileMenu() {
+            console.log('Opening mobile menu');
             mobileMenu.classList.add('open');
             mobileMenuOverlay.classList.add('active');
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            mobileMenuOverlay.setAttribute('aria-hidden', 'false');
             
-            // Prevent body scroll when menu is open
+            // Enhanced body scroll prevention
+            const scrollY = window.scrollY;
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
             document.body.style.width = '100%';
             
+            // Store scroll position for restoration
+            document.body.dataset.scrollY = scrollY;
+            
             // Focus management for accessibility
-            closeMenuBtn.focus();
+            setTimeout(() => {
+                closeMenuBtn.focus();
+            }, 100);
             
             // Trap focus within the menu
             mobileMenu.addEventListener('keydown', handleMenuKeydown);
+            
+            // Force visibility of menu links
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+            menuLinks.forEach(link => {
+                link.style.opacity = '1';
+                link.style.transform = 'translateX(0)';
+            });
         }
         
         function closeMobileMenu() {
+            console.log('Closing mobile menu');
             mobileMenu.classList.remove('open');
             mobileMenuOverlay.classList.remove('active');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            mobileMenuOverlay.setAttribute('aria-hidden', 'true');
             
-            // Restore body scroll
+            // Enhanced body scroll restoration
+            const scrollY = document.body.dataset.scrollY;
             document.body.style.overflow = '';
             document.body.style.position = '';
+            document.body.style.top = '';
             document.body.style.width = '';
             
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY));
+            }
+            
             // Return focus to menu button
-            mobileMenuBtn.focus();
+            setTimeout(() => {
+                mobileMenuBtn.focus();
+            }, 100);
             
             // Remove focus trap
             mobileMenu.removeEventListener('keydown', handleMenuKeydown);
@@ -1553,47 +1784,6 @@
                 }
             }
         }
-        
-        // Event listeners with cross-browser support
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-            // Touch event support for better mobile interaction
-            mobileMenuBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                toggleMobileMenu();
-            }, { passive: false });
-        }
-        
-        if (closeMenuBtn) {
-            closeMenuBtn.addEventListener('click', closeMobileMenu);
-            closeMenuBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                closeMobileMenu();
-            }, { passive: false });
-        }
-        
-        // Close mobile menu when clicking on overlay
-        if (mobileMenuOverlay) {
-            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-        }
-        
-        // Close mobile menu when clicking on links
-        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', closeMobileMenu);
-            // Touch event support
-            link.addEventListener('touchstart', function(e) {
-                // Allow the link to work normally, just close the menu
-                setTimeout(closeMobileMenu, 100);
-            });
-        });
-        
-        // Handle window resize to close menu on desktop
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768 && mobileMenu.classList.contains('open')) {
-                closeMobileMenu();
-            }
-        });
         
         // Smooth scrolling for navigation links
         const navLinks = document.querySelectorAll('a[href^="#"]');
@@ -2590,6 +2780,28 @@
                 }
             });
         }
+        
+        // Initialize mobile menu when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing mobile menu');
+            console.log('Mobile menu button:', mobileMenuBtn);
+            console.log('Mobile menu:', mobileMenu);
+            console.log('Close button:', closeMenuBtn);
+            console.log('Mobile menu overlay:', mobileMenuOverlay);
+            
+            // Ensure all elements exist
+            if (!mobileMenuBtn || !mobileMenu || !closeMenuBtn || !mobileMenuOverlay) {
+                console.error('Mobile menu elements not found!');
+                return;
+            }
+            
+            // Test menu links
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+            console.log('Menu links found:', menuLinks.length);
+            menuLinks.forEach((link, index) => {
+                console.log(`Link ${index + 1}:`, link.textContent, link.href);
+            });
+        });
     </script>
 </body>
 </html> 
