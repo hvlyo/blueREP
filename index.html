@@ -247,9 +247,6 @@
             transform-style: preserve-3d;
             /* Prevent scrolling on body when menu is open */
             overflow: hidden;
-            /* Ensure complete hiding */
-            visibility: hidden;
-            pointer-events: none;
         }
         
         .mobile-menu.open {
@@ -1780,6 +1777,15 @@
         
         function openMobileMenu() {
             console.log('Opening mobile menu');
+            
+            // Clear any inline styles that might prevent opening
+            mobileMenu.style.visibility = '';
+            mobileMenu.style.pointerEvents = '';
+            mobileMenu.style.transform = '';
+            mobileMenu.style.webkitTransform = '';
+            mobileMenu.style.mozTransform = '';
+            mobileMenu.style.msTransform = '';
+            
             mobileMenu.classList.add('open');
             mobileMenuOverlay.classList.add('active');
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
@@ -1833,26 +1839,17 @@
                 window.scrollTo(0, parseInt(scrollY));
             }
             
-            // Force complete cleanup of menu state
+            // Reset any inline styles on menu links
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+            menuLinks.forEach(link => {
+                link.style.opacity = '';
+                link.style.transform = '';
+            });
+            
+            // Return focus to menu button
             setTimeout(() => {
-                // Ensure menu is completely hidden
-                mobileMenu.style.visibility = 'hidden';
-                mobileMenu.style.pointerEvents = 'none';
-                mobileMenu.style.transform = 'translateX(100%)';
-                mobileMenu.style.webkitTransform = 'translateX(100%)';
-                mobileMenu.style.mozTransform = 'translateX(100%)';
-                mobileMenu.style.msTransform = 'translateX(100%)';
-                
-                // Reset any inline styles on menu links
-                const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
-                menuLinks.forEach(link => {
-                    link.style.opacity = '';
-                    link.style.transform = '';
-                });
-                
-                // Return focus to menu button
                 mobileMenuBtn.focus();
-            }, 400); // Wait for transition to complete
+            }, 100);
             
             // Remove focus trap
             mobileMenu.removeEventListener('keydown', handleMenuKeydown);
@@ -2897,12 +2894,6 @@
             function ensureCleanMenuState() {
                 mobileMenu.classList.remove('open');
                 mobileMenuOverlay.classList.remove('active');
-                mobileMenu.style.visibility = 'hidden';
-                mobileMenu.style.pointerEvents = 'none';
-                mobileMenu.style.transform = 'translateX(100%)';
-                mobileMenu.style.webkitTransform = 'translateX(100%)';
-                mobileMenu.style.mozTransform = 'translateX(100%)';
-                mobileMenu.style.msTransform = 'translateX(100%)';
                 
                 // Reset body styles
                 document.body.style.overflow = '';
