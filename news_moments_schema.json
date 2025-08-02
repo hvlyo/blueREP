@@ -1,0 +1,209 @@
+{
+  "newsAndUpdates": {
+    "description": "Schema for News and Updates section content",
+    "type": "object",
+    "properties": {
+      "sectionTitle": {
+        "type": "string",
+        "description": "Main section title",
+        "example": "News and Updates"
+      },
+      "sectionDescription": {
+        "type": "string",
+        "description": "Section subtitle/description",
+        "example": "Stay updated with the latest news, announcements, and behind-the-scenes content from blueREP."
+      },
+      "articles": {
+        "type": "array",
+        "description": "Array of news articles",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier for the article",
+              "example": "news-001"
+            },
+            "category": {
+              "type": "string",
+              "description": "Article category/badge",
+              "enum": ["Latest", "Event", "Award", "Announcement", "Workshop", "Production"],
+              "example": "Latest"
+            },
+            "categoryColor": {
+              "type": "string",
+              "description": "CSS color class for category badge",
+              "example": "bg-bluerep-blue"
+            },
+            "date": {
+              "type": "string",
+              "description": "Publication date",
+              "format": "date",
+              "example": "2024-12-15"
+            },
+            "title": {
+              "type": "string",
+              "description": "Article title",
+              "example": "Auditions for Spring 2025 Production"
+            },
+            "excerpt": {
+              "type": "string",
+              "description": "Short description/excerpt",
+              "example": "We're excited to announce auditions for our upcoming spring production. All students are welcome to try out!"
+            },
+            "readMoreUrl": {
+              "type": "string",
+              "description": "Link to full article",
+              "example": "/news/auditions-spring-2025"
+            },
+            "featured": {
+              "type": "boolean",
+              "description": "Whether this article should be featured",
+              "default": false
+            }
+          },
+          "required": ["id", "category", "date", "title", "excerpt"]
+        }
+      }
+    }
+  },
+  "moments": {
+    "description": "Schema for Moments section (show cards)",
+    "type": "object",
+    "properties": {
+      "sectionTitle": {
+        "type": "string",
+        "description": "Main section title",
+        "example": "Moments"
+      },
+      "sectionDescription": {
+        "type": "string",
+        "description": "Section subtitle/description",
+        "example": "Captured memories from our past events and productions."
+      },
+      "shows": {
+        "type": "array",
+        "description": "Array of show/production cards",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier for the show",
+              "example": "show-001"
+            },
+            "title": {
+              "type": "string",
+              "description": "Show title",
+              "example": "Spring Awakening"
+            },
+            "year": {
+              "type": "string",
+              "description": "Production year",
+              "example": "2024"
+            },
+            "imageUrl": {
+              "type": "string",
+              "description": "Path to show image",
+              "example": "/assets/shows/spring-awakening-2024.jpg"
+            },
+            "imageAlt": {
+              "type": "string",
+              "description": "Alt text for show image",
+              "example": "Spring Awakening 2024 Production"
+            },
+            "description": {
+              "type": "string",
+              "description": "Brief description of the show",
+              "example": "A powerful coming-of-age musical that explores the journey of self-discovery."
+            },
+            "director": {
+              "type": "string",
+              "description": "Show director",
+              "example": "Maria Santos"
+            },
+            "venue": {
+              "type": "string",
+              "description": "Performance venue",
+              "example": "Ateneo de Manila University"
+            },
+            "status": {
+              "type": "string",
+              "description": "Show status",
+              "enum": ["completed", "upcoming", "cancelled"],
+              "example": "completed"
+            },
+            "tags": {
+              "type": "array",
+              "description": "Tags for categorization",
+              "items": {
+                "type": "string"
+              },
+              "example": ["musical", "drama", "coming-of-age"]
+            }
+          },
+          "required": ["id", "title", "year"]
+        }
+      }
+    }
+  },
+  "contentManagement": {
+    "description": "Content management guidelines",
+    "type": "object",
+    "properties": {
+      "newsGuidelines": {
+        "type": "object",
+        "properties": {
+          "maxArticles": {
+            "type": "number",
+            "description": "Maximum number of articles to display",
+            "default": 6
+          },
+          "categories": {
+            "type": "array",
+            "description": "Available article categories",
+            "items": {
+              "type": "string"
+            },
+            "example": ["Latest", "Event", "Award", "Announcement", "Workshop", "Production"]
+          },
+          "dateFormat": {
+            "type": "string",
+            "description": "Date display format",
+            "example": "MMMM DD, YYYY"
+          }
+        }
+      },
+      "momentsGuidelines": {
+        "type": "object",
+        "properties": {
+          "maxShows": {
+            "type": "number",
+            "description": "Maximum number of shows to display",
+            "default": 8
+          },
+          "imageRequirements": {
+            "type": "object",
+            "properties": {
+              "aspectRatio": {
+                "type": "string",
+                "description": "Recommended aspect ratio",
+                "example": "16:9"
+              },
+              "minWidth": {
+                "type": "number",
+                "description": "Minimum image width in pixels",
+                "example": 400
+              },
+              "maxFileSize": {
+                "type": "string",
+                "description": "Maximum file size",
+                "example": "2MB"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 

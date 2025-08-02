@@ -1,0 +1,170 @@
+{
+  "newsAndUpdates": {
+    "sectionTitle": "News and Updates",
+    "sectionDescription": "Stay updated with the latest news, announcements, and behind-the-scenes content from blueREP.",
+    "articles": [
+      {
+        "id": "news-001",
+        "category": "Latest",
+        "categoryColor": "bg-bluerep-blue",
+        "date": "2024-12-15",
+        "title": "Auditions for Spring 2025 Production",
+        "excerpt": "We're excited to announce auditions for our upcoming spring production. All students are welcome to try out!",
+        "readMoreUrl": "/news/auditions-spring-2025",
+        "featured": true
+      },
+      {
+        "id": "news-002",
+        "category": "Event",
+        "categoryColor": "bg-green-500",
+        "date": "2024-12-10",
+        "title": "Holiday Workshop Series",
+        "excerpt": "Join us for our special holiday workshop series featuring guest artists and industry professionals.",
+        "readMoreUrl": "/news/holiday-workshop-series",
+        "featured": false
+      },
+      {
+        "id": "news-003",
+        "category": "Award",
+        "categoryColor": "bg-purple-500",
+        "date": "2024-12-05",
+        "title": "Best Musical Production Award",
+        "excerpt": "We're proud to announce that our latest production has won the Best Musical Production Award!",
+        "readMoreUrl": "/news/best-musical-production-award",
+        "featured": true
+      },
+      {
+        "id": "news-004",
+        "category": "Workshop",
+        "categoryColor": "bg-orange-500",
+        "date": "2024-11-28",
+        "title": "Vocal Training Workshop",
+        "excerpt": "Master the art of vocal performance with our intensive workshop led by professional vocal coaches.",
+        "readMoreUrl": "/news/vocal-training-workshop",
+        "featured": false
+      },
+      {
+        "id": "news-005",
+        "category": "Production",
+        "categoryColor": "bg-red-500",
+        "date": "2024-11-20",
+        "title": "Behind the Scenes: Spring Awakening",
+        "excerpt": "Take a peek behind the curtains and discover the magic that went into creating our latest production.",
+        "readMoreUrl": "/news/behind-scenes-spring-awakening",
+        "featured": false
+      },
+      {
+        "id": "news-006",
+        "category": "Announcement",
+        "categoryColor": "bg-teal-500",
+        "date": "2024-11-15",
+        "title": "New Partnership with Local Theatre",
+        "excerpt": "We're thrilled to announce our new partnership with the Manila Theatre Guild for collaborative productions.",
+        "readMoreUrl": "/news/new-partnership",
+        "featured": true
+      }
+    ]
+  },
+  "moments": {
+    "sectionTitle": "Moments",
+    "sectionDescription": "Captured memories from our past events and productions.",
+    "shows": [
+      {
+        "id": "show-001",
+        "title": "Spring Awakening",
+        "year": "2024",
+        "imageUrl": "/assets/shows/spring-awakening-2024.jpg",
+        "imageAlt": "Spring Awakening 2024 Production",
+        "description": "A powerful coming-of-age musical that explores the journey of self-discovery and the challenges of adolescence.",
+        "director": "Maria Santos",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "drama", "coming-of-age", "contemporary"]
+      },
+      {
+        "id": "show-002",
+        "title": "Rent",
+        "year": "2023",
+        "imageUrl": "/assets/shows/rent-2023.jpg",
+        "imageAlt": "Rent 2023 Production",
+        "description": "Jonathan Larson's groundbreaking musical about love, friendship, and living life to the fullest.",
+        "director": "Carlos Rodriguez",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "rock", "contemporary", "drama"]
+      },
+      {
+        "id": "show-003",
+        "title": "Les Misérables",
+        "year": "2023",
+        "imageUrl": "/assets/shows/les-miserables-2023.jpg",
+        "imageAlt": "Les Misérables 2023 Production",
+        "description": "Victor Hugo's epic tale of redemption, love, and revolution in 19th century France.",
+        "director": "Ana Martinez",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "classic", "drama", "historical"]
+      },
+      {
+        "id": "show-004",
+        "title": "Wicked",
+        "year": "2022",
+        "imageUrl": "/assets/shows/wicked-2022.jpg",
+        "imageAlt": "Wicked 2022 Production",
+        "description": "The untold story of the witches of Oz, exploring friendship, love, and the nature of good and evil.",
+        "director": "Luis Garcia",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "fantasy", "drama", "friendship"]
+      },
+      {
+        "id": "show-005",
+        "title": "Hamilton",
+        "year": "2022",
+        "imageUrl": "/assets/shows/hamilton-2022.jpg",
+        "imageAlt": "Hamilton 2022 Production",
+        "description": "Lin-Manuel Miranda's revolutionary musical about the founding of America through hip-hop and R&B.",
+        "director": "Isabella Cruz",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "hip-hop", "historical", "revolutionary"]
+      },
+      {
+        "id": "show-006",
+        "title": "The Phantom of the Opera",
+        "year": "2021",
+        "imageUrl": "/assets/shows/phantom-2021.jpg",
+        "imageAlt": "The Phantom of the Opera 2021 Production",
+        "description": "Andrew Lloyd Webber's haunting tale of love, obsession, and the power of music.",
+        "director": "Miguel Torres",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "gothic", "romance", "classic"]
+      },
+      {
+        "id": "show-007",
+        "title": "Chicago",
+        "year": "2021",
+        "imageUrl": "/assets/shows/chicago-2021.jpg",
+        "imageAlt": "Chicago 2021 Production",
+        "description": "A razzle-dazzle musical about fame, fortune, and all that jazz in 1920s Chicago.",
+        "director": "Sofia Reyes",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "jazz", "crime", "comedy"]
+      },
+      {
+        "id": "show-008",
+        "title": "Into the Woods",
+        "year": "2020",
+        "imageUrl": "/assets/shows/into-the-woods-2020.jpg",
+        "imageAlt": "Into the Woods 2020 Production",
+        "description": "Stephen Sondheim's magical musical that intertwines classic fairy tales with unexpected consequences.",
+        "director": "Diego Morales",
+        "venue": "Ateneo de Manila University",
+        "status": "completed",
+        "tags": ["musical", "fantasy", "fairy-tale", "adventure"]
+      }
+    ]
+  }
+} 

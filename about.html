@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Ateneo Blue Repertory</title>
+    <meta name="description" content="Learn about Ateneo Blue Repertory, the premier musical theatre organization of Ateneo de Manila University">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/black_favicon.png">
+    <link rel="apple-touch-icon" href="/assets/black_favicon.png">
+    
+    <style>
+        /* Custom CSS Variables */
+        :root {
+            --bluerep-blue: #0e143c;
+            --light-purple: #ededf7;
+            --gradient: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);
+        }
+        
+        /* Font Mappings */
+        .font-fjalla { font-family: 'Inter', sans-serif; font-weight: 700; }
+        .font-lehigh { font-family: 'Inter', sans-serif; font-weight: 600; }
+        .font-proxima { font-family: 'Inter', sans-serif; font-weight: 400; }
+        .font-proxima-semibold { font-family: 'Inter', sans-serif; font-weight: 600; }
+        
+        /* Custom Colors */
+        .text-bluerep-blue { color: var(--bluerep-blue); }
+        .bg-bluerep-blue { background-color: var(--bluerep-blue); }
+        .text-light-purple { color: var(--light-purple); }
+        .bg-light-purple { background-color: var(--light-purple); }
+        
+        /* Header Styles */
+        header.bg-gradient {
+            background: #ededf7;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: #0e143c;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            background-color: #0e143c !important;
+            color: #ededf7 !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link.active::after {
+            display: none;
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--bluerep-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--bluerep-blue);
+        }
+        
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--bluerep-blue);
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            padding: 12px 24px;
+            color: #0e143c;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #0e143c;
+        }
+        
+        .btn-secondary:hover {
+            background: #0e143c;
+            color: #ededf7;
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        /* Sticky Navbar */
+        header.scrolled {
+            background: rgba(237, 237, 247, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="top"></div>
+    
+    <!-- Header -->
+    <header id="navbar" class="sticky top-0 z-50 transition-all duration-300">
+        <nav class="w-full px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="#" class="cursor-pointer logo-link">
+                        <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-16 w-auto">
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Home</a>
+                    <a href="about.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">About</a>
+                    <a href="tickets.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Tickets</a>
+                    <a href="productions.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Productions</a>
+                    <a href="merchandise.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Merchandise</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-bluerep-blue" aria-label="Toggle mobile menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-8">
+                        <a href="index.html#top" class="cursor-pointer">
+                            <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
+                        </a>
+                        <button id="close-menu-btn" class="p-2 text-bluerep-blue" aria-label="Close mobile menu">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex flex-col space-y-4">
+                        <a href="index.html" class="nav-link font-proxima text-bluerep-blue py-2">Home</a>
+                        <a href="about.html" class="nav-link font-proxima text-bluerep-blue py-2">About</a>
+                        <a href="tickets.html" class="nav-link font-proxima text-bluerep-blue py-2">Tickets</a>
+                        <a href="productions.html" class="nav-link font-proxima text-bluerep-blue py-2">Productions</a>
+                        <a href="merchandise.html" class="nav-link font-proxima text-bluerep-blue py-2">Merchandise</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="bg-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="max-w-6xl mx-auto fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Left Side - Image -->
+                    <div class="order-2 lg:order-1">
+                        <img src="/assets/aboutus.jpg" alt="About blueREP" class="w-full h-auto rounded-lg shadow-lg">
+                    </div>
+                    
+                    <!-- Right Side - Content -->
+                    <div class="order-1 lg:order-2">
+                        <h2 class="text-3xl md:text-4xl font-lehigh text-black mb-6">
+                            About Us
+                        </h2>
+                        <p class="text-lg md:text-xl font-proxima text-black leading-relaxed">
+                            Ateneo Blue Repertory (blueREP) is the <span class="font-bold" style="color: #0e143c;">premier musical theatre organization</span> of the Ateneo de Manila University.<br><br>
+                            Today, blueREP continues to hone its members in the fields of <span class="font-bold" style="color: #0e143c;">performance, production, and theatre management</span>, aiming to mold a holistic and disciplined community of artists within the university. With passion, the organization endeavors to immerse its audiences in shows that communicate relevant messages, and to inspire in them creativity, joy, and imagination unique to musical theatre.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Logo and Description -->
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-fjalla mb-4">blueREP</h3>
+                    <p class="font-proxima text-gray-300">
+                        The premier musical theatre organization of Ateneo de Manila University
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-lg font-lehigh mb-4">Quick Links</h4>
+                    <ul class="space-y-2 font-proxima text-gray-300">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="tickets.html" class="hover:text-white transition-colors">Tickets</a></li>
+                        <li><a href="productions.html" class="hover:text-white transition-colors">Productions</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-lg font-lehigh mb-4">Contact</h4>
+                    <div class="font-proxima text-gray-300 space-y-2">
+                        <p>Email: <a href="mailto:contact@bluerep.org" class="hover:text-white transition-colors">contact@bluerep.org</a></p>
+                        <p>Ateneo de Manila University</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="font-proxima text-gray-300">
+                    © 2024 Ateneo Blue Repertory. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+        }
+        
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('open');
+        }
+        
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        closeMenuBtn.addEventListener('click', closeMobileMenu);
+        
+        // Close mobile menu when clicking on links
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        
+        // Sticky Navbar
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Fade-in Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+        
+        // Active Page Highlighting
+        function setActivePage() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Logo Click Handler
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoLinks = document.querySelectorAll('.logo-link');
+            logoLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+            
+            setActivePage();
+        });
+    </script>
+</body>
+</html>

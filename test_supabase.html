@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Test</title>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <div id="results"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://mkyvwkwkvqibelypmuaw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1reXZ3a3drdnFpYmVseXBtdWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNjM5MzYsImV4cCI6MjA2OTYzOTkzNn0.1VVp26cZ-HbO_dr0Bpxjqa6D-ruay0DCn16v91p2kCM';
+
+        async function testConnection() {
+            const results = document.getElementById('results');
+            
+            try {
+                // Test 1: Check if tables exist
+                console.log('Testing Supabase connection...');
+                
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/news_articles?select=count`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (response.status === 200) {
+                    results.innerHTML = '<p style="color: green;">✅ Connection successful! Tables exist.</p>';
+                } else if (response.status === 404) {
+                    results.innerHTML = '<p style="color: red;">❌ Tables do not exist. Please run the SQL schema first.</p>';
+                } else {
+                    const errorText = await response.text();
+                    results.innerHTML = `<p style="color: red;">❌ Error: ${response.status} - ${errorText}</p>`;
+                }
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                results.innerHTML = `<p style="color: red;">❌ Connection failed: ${error.message}</p>`;
+            }
+        }
+
+        // Run test when page loads
+        testConnection();
+    </script>
+</body>
+</html> 

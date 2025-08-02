@@ -124,7 +124,7 @@
             left: 0;
             width: 0;
             height: 3px;
-            background: #ffffff;
+            background: #0e143c;
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 2px;
         }
@@ -134,16 +134,26 @@
         }
         
         .nav-link.active {
-            color: #ffffff !important;
+            background-color: #0e143c !important;
+            color: #ededf7 !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
         
         .nav-link.active::after {
-            width: 100%;
+            display: none;
         }
         
-        /* Add black background to navbar */
-        header.bg-gradient {
-            background: #000000;
+        /* Navbar styling */
+        #navbar {
+            background: transparent;
+            backdrop-filter: blur(10px);
+        }
+        
+        #navbar.scrolled {
+            background: #ededf7;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
         /* Mobile Menu */
@@ -158,9 +168,12 @@
         
         /* Hero Section */
         .hero-gradient {
-            background: white;
+            background: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);
             position: relative;
             overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
         }
         
         .hero-gradient::before {
@@ -200,7 +213,8 @@
         .hero-title {
             max-width: 100%;
             height: auto;
-            margin-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            margin-top: -8rem;
             filter: drop-shadow(0 4px 8px rgba(14, 20, 60, 0.2));
             display: block;
             margin-left: auto;
@@ -211,6 +225,7 @@
             font-size: clamp(1.125rem, 4vw, 1.5rem);
             line-height: 1.4;
             margin-bottom: 2.5rem;
+            margin-top: -40rem;
             opacity: 0.9;
             text-shadow: 0 2px 4px rgba(14, 20, 60, 0.1);
         }
@@ -323,12 +338,12 @@
         
         .btn-secondary {
             background: transparent;
-            color: #ffffff;
+            color: #0e143c;
             padding: 12px 24px;
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            border: 2px solid #ffffff;
+            border: 2px solid #0e143c;
             min-height: 44px;
             display: inline-flex;
             align-items: center;
@@ -336,8 +351,8 @@
         }
         
         .btn-secondary:hover {
-            background: #ffffff;
-            color: #000000;
+            background: #0e143c;
+            color: #ededf7;
             transform: translateY(-2px);
         }
         
@@ -424,31 +439,343 @@
                 padding: 100px 0;
             }
         }
+        
+        /* Fullscreen Carousel Styles */
+        #moments-carousel {
+            scroll-behavior: smooth;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #moments-track {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Fullscreen image fitting */
+        #moments-carousel img {
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Fullscreen slide dimensions */
+        #moments-track > div {
+            flex-shrink: 0;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        
+        /* Responsive text sizing for overlaid content */
+        @media (max-width: 640px) {
+            #moments-carousel .text-3xl {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+            
+            #moments-carousel .text-lg {
+                font-size: 1rem;
+                line-height: 1.5rem;
+            }
+        }
+        
+        @media (min-width: 641px) and (max-width: 1024px) {
+            #moments-carousel .text-5xl {
+                font-size: 2.5rem;
+                line-height: 3rem;
+            }
+            
+            #moments-carousel .text-xl {
+                font-size: 1.25rem;
+                line-height: 1.75rem;
+            }
+        }
+        
+        .carousel-dot {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-dot:hover {
+            transform: scale(1.2);
+        }
+        
+        .carousel-dot.active {
+            background-color: var(--bluerep-blue);
+            transform: scale(1.1);
+        }
+        
+        /* Carousel navigation buttons */
+        #carousel-prev,
+        #carousel-next {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        #carousel-prev:hover,
+        #carousel-next:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            #moments-carousel {
+                border-radius: 1rem;
+            }
+            
+            #carousel-prev,
+            #carousel-next {
+                padding: 0.5rem;
+            }
+            
+            #carousel-prev svg,
+            #carousel-next svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+        
+        /* Touch-friendly carousel */
+        @media (hover: none) {
+            #carousel-prev,
+            #carousel-next {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9);
+            }
+        }
+        
+        /* News Carousel Styles */
+        #news-carousel {
+            scroll-behavior: smooth;
+        }
+        
+        #news-track {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .news-carousel-dot {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .news-carousel-dot:hover {
+            transform: scale(1.2);
+        }
+        
+        .news-carousel-dot.active {
+            background-color: var(--bluerep-blue);
+            transform: scale(1.1);
+        }
+        
+        /* News carousel navigation buttons */
+        #news-prev,
+        #news-next {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        #news-prev:hover,
+        #news-next:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* Mobile optimizations for news carousel */
+        @media (max-width: 768px) {
+            #news-carousel {
+                border-radius: 1rem;
+            }
+            
+            #news-prev,
+            #news-next {
+                padding: 0.5rem;
+            }
+            
+            #news-prev svg,
+            #news-next svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+        
+        /* News card hover effects - desktop only */
+        @media (hover: hover) {
+            .news-card:hover {
+                transform: scale(1.02);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            }
+            
+            .news-card:hover .hover\\:text-blue-800 {
+                color: #1e40af;
+            }
+            
+            .news-card:hover .hover\\:text-gray-700 {
+                color: #374151;
+            }
+            
+            .news-card:hover .hover\\:translate-x-1 {
+                transform: translateX(0.25rem);
+            }
+            
+            .news-card:hover .hover\\:opacity-100 {
+                opacity: 1;
+            }
+        }
+        
+        /* Touch-friendly news carousel */
+        @media (hover: none) {
+            #news-prev,
+            #news-next {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9);
+            }
+            
+            /* Disable all hover effects on touch devices */
+            .news-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .news-card:hover .hover\\:text-blue-800 {
+                color: inherit;
+            }
+            
+            .news-card:hover .hover\\:text-gray-700 {
+                color: inherit;
+            }
+            
+            .news-card:hover .hover\\:translate-x-1 {
+                transform: none;
+            }
+            
+            .news-card:hover .hover\\:opacity-100 {
+                opacity: 0;
+            }
+        }
+        
+        /* Moments section overlaid text styles */
+        #moments .backdrop-blur-sm {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        
+        /* Ensure text is always readable */
+        #moments .text-white {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        #moments .drop-shadow-lg {
+            filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+        }
+        
+        /* Responsive text container */
+        @media (max-width: 768px) {
+            #moments .max-w-md {
+                max-width: 90vw;
+            }
+            
+            #moments .p-8 {
+                padding: 1rem;
+            }
+            
+            #moments .md\:p-12 {
+                padding: 1rem;
+            }
+        }
+        
+        /* Enhanced arrow visibility */
+        #carousel-prev,
+        #carousel-next {
+            background-color: rgba(255, 255, 255, 0.3) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        #carousel-prev:hover,
+        #carousel-next:hover {
+            background-color: rgba(255, 255, 255, 0.5) !important;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* Ensure carousel track handles full-width slides properly */
+        #moments {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #moments-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #moments-track .w-screen {
+            flex-shrink: 0;
+            width: 100vw;
+        }
+        
+        /* Ensure no gaps or overlaps between slides */
+        #moments-track > div:not(:first-child) {
+            margin-left: 0;
+        }
+        
+        /* Force exact viewport width */
+        #moments-carousel,
+        #moments-track,
+        #moments-track > div {
+            box-sizing: border-box;
+        }
+        
+        /* Line clamp utility for text truncation */
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
+    <!-- Top anchor for logo navigation -->
+    <div id="top"></div>
+    
     <!-- Header/Navigation -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-gradient backdrop-blur-sm border-b border-white/20">
+    <header id="navbar" class="sticky top-0 z-50 transition-all duration-300">
         <nav class="w-full px-6 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="#home" class="cursor-pointer">
-                        <img src="/assets/white_logo.svg" alt="blueREP Logo" class="h-16 w-auto">
+                    <a href="index.html#top" class="cursor-pointer">
+                        <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-16 w-auto">
                     </a>
                 </div>
                 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">Home</a>
-                    <a href="#about" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">About</a>
-                    <a href="#shows" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">Shows</a>
-                    <a href="#join" class="nav-link font-proxima-semibold text-white hover:text-gray-300 transition-colors">Join Us</a>
-                    <a href="mailto:contact@bluerep.org" class="btn-secondary">Contact</a>
+                    <a href="index.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Home</a>
+                    <a href="about.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">About</a>
+                    <a href="tickets.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Tickets</a>
+                    <a href="productions.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Productions</a>
+                    <a href="merchandise.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Merchandise</a>
                 </div>
                 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2" aria-label="Toggle mobile menu">
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-bluerep-blue" aria-label="Toggle mobile menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -457,31 +784,31 @@
         </nav>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-black shadow-lg z-50">
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-8">
-                    <a href="#home" class="cursor-pointer">
-                        <img src="/assets/white_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
+                    <a href="index.html#top" class="cursor-pointer">
+                        <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
                     </a>
-                    <button id="close-menu-btn" class="p-2 text-white" aria-label="Close mobile menu">
+                    <button id="close-menu-btn" class="p-2 text-bluerep-blue" aria-label="Close mobile menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
                 <div class="flex flex-col space-y-4">
-                    <a href="#home" class="nav-link font-proxima text-white py-2">Home</a>
-                    <a href="#about" class="nav-link font-proxima text-white py-2">About</a>
-                    <a href="#shows" class="nav-link font-proxima text-white py-2">Shows</a>
-                    <a href="#join" class="nav-link font-proxima text-white py-2">Join Us</a>
-                    <a href="mailto:contact@bluerep.org" class="btn-secondary mt-4">Contact</a>
+                    <a href="index.html" class="nav-link font-proxima text-bluerep-blue py-2">Home</a>
+                    <a href="about.html" class="nav-link font-proxima text-bluerep-blue py-2">About</a>
+                    <a href="tickets.html" class="nav-link font-proxima text-bluerep-blue py-2">Tickets</a>
+                    <a href="productions.html" class="nav-link font-proxima text-bluerep-blue py-2">Productions</a>
+                    <a href="merchandise.html" class="nav-link font-proxima text-bluerep-blue py-2">Merchandise</a>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="hero-gradient min-h-screen flex items-center justify-center text-bluerep-blue relative overflow-hidden bg-black">
+    <section id="home" class="hero-gradient min-h-screen flex items-center justify-center text-bluerep-blue relative overflow-hidden">
         <!-- Background Poster Grid -->
         <div class="absolute inset-0 poster-grid">
             <div class="poster-item">
@@ -514,120 +841,213 @@
         <div class="absolute inset-0 bg-black bg-opacity-30 z-5"></div>
         
         <!-- Foreground Content -->
-        <div class="container mx-auto px-4 text-center relative z-10">
+        <div class="container mx-auto px-4 text-center relative z-10 flex items-center justify-center min-h-screen">
             <div class="hero-content fade-in">
-                <img src="/assets/white_hero_title.png" alt="Ateneo Blue Repertory" class="hero-title mb-6 max-w-full h-auto mx-auto block">
-                <p class="hero-tagline font-lehigh max-w-4xl mx-auto" style="color: #ffffff; margin-top: -3rem;">
+                <img src="/assets/white_hero_title.png" alt="Ateneo Blue Repertory" class="hero-title mb-4 max-w-full h-auto mx-auto block">
+                <p class="hero-tagline font-lehigh max-w-4xl mx-auto" style="color: #ffffff; margin-top: 0rem;">
                     BE ANYTHING, BE BLUEREP
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="bg-white">
-        <div class="container mx-auto px-4 py-16">
-            <div class="max-w-6xl mx-auto fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <!-- Left Side - Image -->
-                    <div class="order-2 lg:order-1">
-                        <img src="/assets/aboutus.jpg" alt="About blueREP" class="w-full h-auto rounded-lg shadow-lg">
-                    </div>
-                    
-                    <!-- Right Side - Content -->
-                    <div class="order-1 lg:order-2">
-                        <h2 class="text-3xl md:text-4xl font-lehigh text-black mb-6">
-                            About Us
-                        </h2>
-                        <p class="text-lg md:text-xl font-proxima text-black leading-relaxed">
-                            Ateneo Blue Repertory (blueREP) is the <span class="font-bold" style="color: #0e143c;">premier musical theatre organization</span> of the Ateneo de Manila University.<br><br>
-                            Today, blueREP continues to hone its members in the fields of <span class="font-bold" style="color: #0e143c;">performance, production, and theatre management</span>, aiming to mold a holistic and disciplined community of artists within the university. With passion, the organization endeavors to immerse its audiences in shows that communicate relevant messages, and to inspire in them creativity, joy, and imagination unique to musical theatre.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Shows Section -->
-    <section id="shows" class="bg-white">
+    <!-- News and Updates Section -->
+    <section id="news" class="bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12 fade-in">
                 <h2 class="text-3xl md:text-4xl font-lehigh text-bluerep-blue mb-4">
-                    Our Productions
+                    News and Updates
                 </h2>
                 <p class="text-lg font-proxima text-gray-600 max-w-2xl mx-auto">
-                    Discover our latest performances and upcoming shows
+                    Stay updated with the latest news, announcements, and behind-the-scenes content from blueREP.
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Show Card 1 -->
-                <div class="show-card bg-white shadow-lg fade-in">
-                    <div class="show-image">
-                        Spring Awakening 2024
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Spring Awakening</h3>
-                        <p class="text-gray-600 font-proxima">2024</p>
-                    </div>
-                </div>
+            <!-- News Carousel Container -->
+            <div class="relative max-w-6xl mx-auto">
+                <!-- Background Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-br from-bluerep-blue/60 to-purple-900/60 rounded-3xl -m-20 z-0" style="min-height: 400px;"></div>
                 
-                <!-- Show Card 2 -->
-                <div class="show-card bg-white shadow-lg fade-in">
-                    <div class="show-image">
-                        Rent 2023
+                <!-- Carousel Container -->
+                <div class="relative z-10 group">
+                    <!-- Carousel Track -->
+                    <div id="news-carousel" class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <div id="news-track" class="flex transition-transform duration-700 ease-in-out">
+                            <!-- Dynamic content will be loaded here -->
+                            <div class="flex justify-center items-center py-16 w-full">
+                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-bluerep-blue"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Arrows -->
+                        <button id="news-prev" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-bluerep-blue p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 opacity-0 group-hover:opacity-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <button id="news-next" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-bluerep-blue p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 opacity-0 group-hover:opacity-100">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Overlay for hover effect -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Rent</h3>
-                        <p class="text-gray-600 font-proxima">2023</p>
-                    </div>
-                </div>
-                
-                <!-- Show Card 3 -->
-                <div class="show-card bg-white shadow-lg fade-in">
-                    <div class="show-image">
-                        Les Misérables 2023
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Les Misérables</h3>
-                        <p class="text-gray-600 font-proxima">2023</p>
-                    </div>
-                </div>
-                
-                <!-- Show Card 4 -->
-                <div class="show-card bg-white shadow-lg fade-in">
-                    <div class="show-image">
-                        Wicked 2022
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">Wicked</h3>
-                        <p class="text-gray-600 font-proxima">2022</p>
+                    
+                    <!-- Dot Indicators -->
+                    <div id="news-dots" class="flex justify-center mt-6 space-x-2">
+                        <!-- Dynamic dots will be loaded here -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Join Us Section -->
-    <section id="join" class="bg-bluerep-blue text-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center fade-in">
-                <h2 class="text-3xl md:text-4xl font-lehigh mb-6">
-                    Join Our Community
+            <!-- Moments Section -->
+        <section id="moments" class="relative h-screen overflow-hidden">
+            <!-- Fullscreen Carousel Container -->
+            <div id="moments-carousel" class="relative overflow-hidden h-full w-screen">
+                <div id="moments-track" class="flex transition-transform duration-700 ease-in-out h-full">
+                    <!-- Dynamic content will be loaded here -->
+                    <div class="flex justify-center items-center w-full h-full">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                    </div>
+                </div>
+                
+                <!-- Overlaid Text -->
+                <div class="absolute top-0 left-0 z-20 p-8 md:p-12">
+                    <div class="backdrop-blur-sm rounded-2xl p-6 md:p-8 max-w-md" style="background: linear-gradient(to right, rgba(94, 107, 192, 0.6), rgba(26, 23, 77, 0.6));">
+                        <h2 class="text-2xl md:text-4xl lg:text-5xl font-lehigh text-white mb-3 md:mb-4">
+                            Moments
+                        </h2>
+                        <p class="text-sm md:text-lg font-proxima text-gray-200 leading-relaxed">
+                            Captured memories from our past events and productions.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Navigation Arrows -->
+                <button id="carousel-prev" class="absolute left-4 md:left-8 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-3 md:p-4 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110 z-10 opacity-100">
+                    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                
+                <button id="carousel-next" class="absolute right-4 md:right-8 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white p-3 md:p-4 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110 z-10 opacity-100">
+                    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+                
+                <!-- Dot Indicators -->
+                <div id="carousel-dots" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+                    <!-- Dynamic dots will be loaded here -->
+                </div>
+                
+                <!-- Hover overlay for navigation -->
+                <div class="absolute inset-0 bg-gradient-to-t from-purple-600/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10"></div>
+            </div>
+        </section>
+
+    <!-- Buy Tickets CTA Section -->
+    <section id="tickets-cta" class="bg-gradient-to-r from-bluerep-blue to-purple-900 text-white relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 0%, transparent 50%);"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center fade-in py-16">
+                <h2 class="text-3xl md:text-4xl font-lehigh mb-6 text-black">
+                    Upcoming Shows and Events
                 </h2>
-                <p class="text-lg md:text-xl font-proxima mb-8 leading-relaxed">
-                    Ready to be part of something extraordinary? Join Ateneo Blue Repertory and discover your passion 
-                    for musical theatre. Whether you're interested in acting, singing, dancing, or behind-the-scenes 
-                    production work, there's a place for you in our family.
+                <p class="text-lg md:text-xl font-proxima mb-8 leading-relaxed opacity-90 text-black">
+                    Our public productions are open to all, while select events are exclusive to the Ateneo community—be sure to check each event for details!
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="mailto:contact@bluerep.org" class="btn-secondary">
-                        Contact Us
+                
+                <!-- Events Grid -->
+                <div id="events-grid" class="mb-12">
+                    <div class="flex justify-center items-center py-8">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                    </div>
+                </div>
+                
+
+                <div class="mt-6">
+                    <a href="productions.html" 
+                       class="text-black font-proxima-semibold text-lg hover:text-gray-700 transition-colors duration-300 underline decoration-2 underline-offset-4">
+                        View Past Productions →
                     </a>
-                    <a href="#about" class="btn-primary">
-                        Learn More
-                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-3xl md:text-4xl font-lehigh text-bluerep-blue mb-4">
+                        Get In Touch
+                    </h2>
+                    <p class="text-lg font-proxima text-gray-600 max-w-2xl mx-auto">
+                        Have questions about our productions, auditions, or want to get involved? We'd love to hear from you!
+                    </p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-8 shadow-lg fade-in">
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="first-name" class="block text-sm font-proxima-semibold text-gray-700 mb-2">First Name *</label>
+                                <input type="text" id="first-name" name="first_name" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bluerep-blue focus:border-transparent font-proxima">
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-sm font-proxima-semibold text-gray-700 mb-2">Last Name *</label>
+                                <input type="text" id="last-name" name="last_name" required 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bluerep-blue focus:border-transparent font-proxima">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-proxima-semibold text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="email" name="email" required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bluerep-blue focus:border-transparent font-proxima">
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-sm font-proxima-semibold text-gray-700 mb-2">Subject *</label>
+                            <select id="subject" name="subject" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bluerep-blue focus:border-transparent font-proxima">
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="auditions">Auditions</option>
+                                <option value="tickets">Ticket Information</option>
+                                <option value="volunteer">Volunteer Opportunities</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-proxima-semibold text-gray-700 mb-2">Message *</label>
+                            <textarea id="message" name="message" rows="5" required 
+                                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bluerep-blue focus:border-transparent font-proxima resize-none"></textarea>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" 
+                                    class="bg-bluerep-blue text-white px-8 py-4 rounded-lg font-proxima-semibold text-lg hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                Send Message
+                            </button>
+                        </div>
+                        
+                        <div id="form-status" class="hidden text-center p-4 rounded-lg"></div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -639,30 +1059,23 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Logo and Description -->
                 <div class="text-center md:text-left">
-                    <h3 class="text-2xl font-fjalla mb-4">blueREP</h3>
+                    <img src="/assets/footer_white.png" alt="blueREP Logo" class="h-24 w-auto mb-4 mx-auto md:mx-0">
                     <p class="font-proxima text-gray-300">
                         The premier musical theatre organization of Ateneo de Manila University
                     </p>
                 </div>
                 
-                <!-- Quick Links -->
-                <div class="text-center md:text-left">
-                    <h4 class="text-lg font-lehigh mb-4">Quick Links</h4>
-                    <ul class="space-y-2 font-proxima text-gray-300">
-                        <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
-                        <li><a href="#about" class="hover:text-white transition-colors">About</a></li>
-                        <li><a href="#shows" class="hover:text-white transition-colors">Shows</a></li>
-                        <li><a href="#join" class="hover:text-white transition-colors">Join Us</a></li>
-                    </ul>
-                </div>
+                <!-- Empty column for spacing -->
+                <div></div>
                 
                 <!-- Contact Info -->
                 <div class="text-center md:text-left">
                     <h4 class="text-lg font-lehigh mb-4">Contact</h4>
                     <div class="font-proxima text-gray-300 space-y-2">
-                        <p>Email: <a href="mailto:contact@bluerep.org" class="hover:text-white transition-colors">contact@bluerep.org</a></p>
+                        <p>Email: <a href="mailto:bluerep.house@gmail.com" class="hover:text-white transition-colors">bluerep.house@gmail.com</a></p>
+                        <p>MVP 301, Manuel V. Pangilinan Building</p>
                         <p>Ateneo de Manila University</p>
-                        <p>Quezon City, Philippines</p>
+                        <p>Katipunan Road, Quezon City, Philippines</p>
                     </div>
                 </div>
             </div>
@@ -670,7 +1083,7 @@
             <!-- Bottom Bar -->
             <div class="border-t border-gray-700 mt-8 pt-8 text-center">
                 <p class="font-proxima text-gray-400">
-                    © 2024 Ateneo Blue Repertory. All rights reserved.
+                    © 2025 Ateneo Blue Repertory. All rights reserved.
                 </p>
             </div>
         </div>
@@ -767,6 +1180,39 @@
         // Initialize active nav on page load
         updateActiveNav();
         
+        // Set active page in navigation
+        function setActivePage() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Set active page on load
+        setActivePage();
+        
+        // Sticky navbar scroll behavior
+        const navbar = document.getElementById('navbar');
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
         // Add loading animation for hero section
         window.addEventListener('load', function() {
             const heroContent = document.querySelector('#home .fade-in');
@@ -808,6 +1254,720 @@
                     // Swipe down - could be used for navigation
                 }
             }
+        }
+        
+        // Supabase Integration
+        const SUPABASE_URL = 'https://mkyvwkwkvqibelypmuaw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1reXZ3a3drdnFpYmVseXBtdWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNjM5MzYsImV4cCI6MjA2OTYzOTkzNn0.1VVp26cZ-HbO_dr0Bpxjqa6D-ruay0DCn16v91p2kCM';
+        
+        // Load Moments/Shows from Supabase
+        async function loadMoments() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/shows?select=title,year,image_url,image_alt&archived=eq.false&order=year.desc`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const shows = await response.json();
+                    displayMoments(shows);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Failed to load moments:', response.status, errorText);
+                    displayMoments([]); // Show empty state
+                }
+            } catch (error) {
+                console.error('Error loading moments:', error);
+                displayMoments([]); // Show empty state
+            }
+        }
+        
+        // Carousel state
+        let currentSlide = 0;
+        let autoPlayInterval;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        // Display Moments as Fullscreen Carousel
+        function displayMoments(shows) {
+            const momentsTrack = document.getElementById('moments-track');
+            const carouselDots = document.getElementById('carousel-dots');
+            
+            if (!momentsTrack || !carouselDots) return;
+            
+            if (shows.length === 0) {
+                momentsTrack.innerHTML = `
+                    <div class="w-full h-full flex justify-center items-center">
+                        <div class="text-center text-white">
+                            <div class="text-6xl mb-4">🎭</div>
+                            <p class="text-gray-300 font-proxima text-lg">No moments to display at the moment.</p>
+                        </div>
+                    </div>
+                `;
+                carouselDots.innerHTML = '';
+                return;
+            }
+            
+            // Create fullscreen slides (one image per slide)
+            const slides = shows.map((show, index) => `
+                <div class="w-screen h-full flex-shrink-0 relative">
+                    <!-- Background Image -->
+                    <div class="absolute inset-0">
+                        <img src="${show.image_url || '/assets/card_' + (index + 1) + '.jpg'}" 
+                             alt="${show.image_alt || show.title}" 
+                             class="w-full h-full object-cover object-center"
+                             loading="lazy"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        
+                        <!-- Fallback content if image fails to load -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-bluerep-blue to-purple-800 text-white" style="display: none;">
+                            <div class="text-center p-6">
+                                <div class="text-6xl mb-4">🎭</div>
+                                <h3 class="text-2xl font-lehigh mb-2">${show.title}</h3>
+                                <p class="text-lg font-proxima opacity-90">${show.year}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dark overlay for better text readability -->
+                    <div class="absolute inset-0 bg-black/30"></div>
+                    
+                    <!-- Content overlay -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center text-white max-w-4xl mx-auto px-8">
+                            <h3 class="text-3xl md:text-5xl lg:text-6xl font-lehigh mb-4 md:mb-6 drop-shadow-lg">
+                                ${show.title}
+                            </h3>
+                            <p class="text-lg md:text-xl lg:text-2xl font-proxima opacity-90 drop-shadow-lg">
+                                ${show.year}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `);
+            
+            momentsTrack.innerHTML = slides;
+            
+            // Create dot indicators only if there are multiple slides
+            if (slides.length > 1) {
+                const dots = slides.map((_, index) => `
+                    <button class="carousel-dot w-3 h-3 rounded-full transition-all duration-300 ${index === 0 ? 'bg-white' : 'bg-white/50 hover:bg-white/70'}" 
+                            data-slide="${index}">
+                    </button>
+                `).join('');
+                
+                carouselDots.innerHTML = dots;
+                
+                // Initialize carousel only if there are multiple slides
+                initializeCarousel(slides.length);
+            } else {
+                // Hide dots and navigation if only one slide
+                carouselDots.innerHTML = '';
+                const prevBtn = document.getElementById('carousel-prev');
+                const nextBtn = document.getElementById('carousel-next');
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
+        }
+        
+        // Initialize carousel functionality
+        function initializeCarousel(totalSlides) {
+            const track = document.getElementById('moments-track');
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            const dots = document.querySelectorAll('.carousel-dot');
+            
+            if (!track || totalSlides <= 1) return;
+            
+            // Set initial position
+            currentSlide = 0;
+            updateCarousel();
+            
+            // Event listeners for navigation
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                    updateCarousel();
+                    resetAutoPlay();
+                });
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    updateCarousel();
+                    resetAutoPlay();
+                });
+            }
+            
+            // Dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateCarousel();
+                    resetAutoPlay();
+                });
+            });
+            
+            // Touch/swipe support for mobile
+            track.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            track.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                    updateCarousel();
+                    resetAutoPlay();
+                } else if (e.key === 'ArrowRight') {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    updateCarousel();
+                    resetAutoPlay();
+                }
+            });
+            
+            // Start auto-play
+            startAutoPlay();
+        }
+        
+        // Update carousel position and indicators
+        function updateCarousel() {
+            const track = document.getElementById('moments-track');
+            const dots = document.querySelectorAll('.carousel-dot');
+            
+            if (!track) return;
+            
+            // Update track position - each slide is 100vw wide
+            track.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            
+            // Update dot indicators
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('bg-white');
+                    dot.classList.remove('bg-white/50', 'bg-white/70');
+                } else {
+                    dot.classList.remove('bg-white');
+                    dot.classList.add('bg-white/50');
+                }
+            });
+        }
+        
+        // Handle swipe gestures
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    const nextBtn = document.getElementById('carousel-next');
+                    if (nextBtn) nextBtn.click();
+                } else {
+                    // Swipe right - previous slide
+                    const prevBtn = document.getElementById('carousel-prev');
+                    if (prevBtn) prevBtn.click();
+                }
+            }
+        }
+        
+        // Auto-play functionality
+        function startAutoPlay() {
+            const totalSlides = document.querySelectorAll('.carousel-dot').length;
+            if (totalSlides <= 1) return;
+            
+            autoPlayInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateCarousel();
+            }, 4500); // 4.5 second delay
+        }
+        
+        function resetAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                startAutoPlay();
+            }
+        }
+        
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+        }
+        
+        // Load News Articles from Supabase
+        async function loadNews() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/news_articles?select=title,excerpt,category,category_color,published_date,read_more_url&published=eq.true&order=published_date.desc`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const articles = await response.json();
+                    displayNews(articles);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Failed to load news:', response.status, errorText);
+                    displayNews([]); // Show empty state
+                }
+            } catch (error) {
+                console.error('Error loading news:', error);
+                displayNews([]); // Show empty state
+            }
+        }
+        
+        // Load Events from Supabase
+        async function loadEvents() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/events?select=id,name,description,date,time,location,image_url,tag,registration_link,created_at&order=date.asc`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const events = await response.json();
+                    displayEvents(events);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Failed to load events:', response.status, errorText);
+                    displayEvents([]); // Show empty state
+                }
+            } catch (error) {
+                console.error('Error loading events:', error);
+                displayEvents([]); // Show empty state
+            }
+        }
+        
+        // Display Events
+        function displayEvents(events) {
+            const eventsGrid = document.getElementById('events-grid');
+            
+            if (!eventsGrid) return;
+            
+            if (events.length === 0) {
+                eventsGrid.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-6xl mb-4">🎭</div>
+                        <p class="text-black font-proxima text-lg opacity-90">
+                            There are no upcoming shows or events at the moment.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create responsive grid of event cards
+            const eventsHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    ${events.map(event => {
+                        const eventDate = new Date(event.date).toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        
+                        const eventTime = event.time ? new Date(`2000-01-01T${event.time}`).toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true
+                        }) : '';
+                        
+                        // Truncate description to 3 lines
+                        const truncatedDescription = event.description && event.description.length > 150 
+                            ? event.description.substring(0, 150) + '...' 
+                            : event.description;
+                        
+                        return `
+                            <div class="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                                ${event.image_url ? `
+                                    <div class="relative h-48 overflow-hidden">
+                                        <img src="${event.image_url}" 
+                                             alt="${event.name}" 
+                                             class="w-full h-full object-cover object-center"
+                                             loading="lazy"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-bluerep-blue to-purple-800 text-white" style="display: none;">
+                                            <div class="text-center">
+                                                <div class="text-4xl mb-2">🎭</div>
+                                                <p class="text-sm font-proxima">${event.name}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ` : `
+                                    <div class="h-48 bg-gradient-to-br from-bluerep-blue to-purple-800 flex items-center justify-center">
+                                        <div class="text-center text-white">
+                                            <div class="text-4xl mb-2">🎭</div>
+                                            <p class="text-sm font-proxima">${event.name}</p>
+                                        </div>
+                                    </div>
+                                `}
+                                
+                                <div class="p-6 flex flex-col h-full">
+                                    <div class="flex-grow">
+                                        <h3 class="text-xl font-lehigh text-black mb-3">${event.name}</h3>
+                                        
+                                        <div class="space-y-2 mb-4">
+                                            <div class="flex items-center text-gray-700 text-sm">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                                <span>${eventDate}</span>
+                                            </div>
+                                            
+                                            ${eventTime ? `
+                                                <div class="flex items-center text-gray-700 text-sm">
+                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    <span>${eventTime}</span>
+                                                </div>
+                                            ` : ''}
+                                            
+                                            ${event.location ? `
+                                                <div class="flex items-center text-gray-700 text-sm">
+                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    </svg>
+                                                    <span>${event.location}</span>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                        
+                                        ${truncatedDescription ? `
+                                            <p class="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                                                ${truncatedDescription}
+                                            </p>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    <div class="mt-auto pt-4">
+                                        ${event.tag === 'show' ? `
+                                            <a href="tickets.html" 
+                                               class="inline-flex items-center justify-center w-full bg-bluerep-blue text-white px-4 py-2 rounded-lg font-proxima-semibold text-sm hover:bg-blue-800 transition-all duration-300 transform hover:scale-105">
+                                                Buy Tickets
+                                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                            </a>
+                                        ` : event.tag === 'custom' && event.registration_link ? `
+                                            <a href="${event.registration_link}" 
+                                               target="_blank" 
+                                               rel="noopener noreferrer"
+                                               class="inline-flex items-center justify-center w-full bg-green-600 text-white px-4 py-2 rounded-lg font-proxima-semibold text-sm hover:bg-green-700 transition-all duration-300 transform hover:scale-105">
+                                                Register
+                                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            
+            eventsGrid.innerHTML = eventsHTML;
+        }
+        
+        // News carousel state
+        let currentNewsSlide = 0;
+        let newsAutoPlayInterval;
+        let newsTouchStartX = 0;
+        let newsTouchEndX = 0;
+        
+        // Display News Articles as Carousel
+        function displayNews(articles) {
+            const newsTrack = document.getElementById('news-track');
+            const newsDots = document.getElementById('news-dots');
+            
+            if (!newsTrack || !newsDots) return;
+            
+            if (articles.length === 0) {
+                newsTrack.innerHTML = `
+                    <div class="w-full flex justify-center items-center py-16">
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">🎭</div>
+                            <h3 class="text-xl font-lehigh text-bluerep-blue mb-4">We're brewing something behind the curtain.</h3>
+                            <p class="text-gray-600 font-proxima">Stay tuned!</p>
+                        </div>
+                    </div>
+                `;
+                newsDots.innerHTML = '';
+                return;
+            }
+            
+            // Create news carousel slides (3 cards per slide)
+            const slides = [];
+            for (let i = 0; i < articles.length; i += 3) {
+                const slideArticles = articles.slice(i, i + 3);
+                const slide = `
+                    <div class="w-full flex-shrink-0 relative">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                                                        ${slideArticles.map((article, index) => {
+                                const date = new Date(article.published_date).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                });
+                                
+                                return `
+                                    <a href="${article.read_more_url || '#'}" class="block relative news-card cursor-pointer">
+                                        <div class="relative h-64 md:h-80 overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                                            <div class="absolute inset-0 bg-gradient-to-br from-bluerep-blue/5 to-purple-900/5"></div>
+                                            
+                                            <!-- Article Content -->
+                                            <div class="relative h-full flex flex-col justify-center p-4 md:p-6">
+                                                <div class="flex items-center mb-4">
+                                                    <span class="${article.category_color} text-white text-xs font-proxima-semibold px-2 py-1 rounded-full">${article.category}</span>
+                                                    <span class="text-gray-500 text-xs font-proxima ml-2">${date}</span>
+                                                </div>
+                                                
+                                                <h3 class="text-lg font-lehigh text-bluerep-blue mb-3 leading-tight hover:text-blue-800 transition-colors duration-300">${article.title}</h3>
+                            
+                                                <p class="text-gray-600 font-proxima mb-4 text-sm leading-relaxed hover:text-gray-700 transition-colors duration-300">
+                                                    ${article.excerpt}
+                                                </p>
+                                            
+                                                <div class="mt-auto">
+                                                    <span class="inline-flex items-center text-bluerep-blue font-proxima-semibold text-sm hover:text-blue-800 transition-colors duration-300">
+                                                        Read More →
+                                                        <svg class="w-4 h-4 ml-1 hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Hover overlay -->
+                                            <div class="absolute inset-0 bg-gradient-to-t from-bluerep-blue/10 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                                        </div>
+                                    </a>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+                slides.push(slide);
+            }
+            
+            newsTrack.innerHTML = slides;
+            
+            // Create dot indicators only if there are multiple slides
+            if (slides.length > 1) {
+                const dots = slides.map((_, index) => `
+                    <button class="news-carousel-dot w-3 h-3 rounded-full transition-all duration-300 ${index === 0 ? 'bg-bluerep-blue' : 'bg-gray-300 hover:bg-gray-400'}" 
+                            data-slide="${index}">
+                    </button>
+                `).join('');
+                
+                newsDots.innerHTML = dots;
+                
+                // Initialize news carousel only if there are multiple slides
+                initializeNewsCarousel(slides.length);
+            } else {
+                // Hide dots and navigation if only one slide
+                newsDots.innerHTML = '';
+                const prevBtn = document.getElementById('news-prev');
+                const nextBtn = document.getElementById('news-next');
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
+        }
+        
+        // Initialize news carousel functionality
+        function initializeNewsCarousel(totalSlides) {
+            const track = document.getElementById('news-track');
+            const prevBtn = document.getElementById('news-prev');
+            const nextBtn = document.getElementById('news-next');
+            const dots = document.querySelectorAll('.news-carousel-dot');
+            
+            if (!track || totalSlides <= 1) return;
+            
+            // Set initial position
+            currentNewsSlide = 0;
+            updateNewsCarousel();
+            
+            // Event listeners for navigation
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    currentNewsSlide = (currentNewsSlide - 1 + totalSlides) % totalSlides;
+                    updateNewsCarousel();
+                    resetNewsAutoPlay();
+                });
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    currentNewsSlide = (currentNewsSlide + 1) % totalSlides;
+                    updateNewsCarousel();
+                    resetNewsAutoPlay();
+                });
+            }
+            
+            // Dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentNewsSlide = index;
+                    updateNewsCarousel();
+                    resetNewsAutoPlay();
+                });
+            });
+            
+            // Touch/swipe support for mobile
+            track.addEventListener('touchstart', (e) => {
+                newsTouchStartX = e.changedTouches[0].screenX;
+            });
+            
+            track.addEventListener('touchend', (e) => {
+                newsTouchEndX = e.changedTouches[0].screenX;
+                handleNewsSwipe();
+            });
+            
+            // Start auto-play
+            startNewsAutoPlay();
+        }
+        
+        // Update news carousel position and indicators
+        function updateNewsCarousel() {
+            const track = document.getElementById('news-track');
+            const dots = document.querySelectorAll('.news-carousel-dot');
+            
+            if (!track) return;
+            
+            // Update track position
+            track.style.transform = `translateX(-${currentNewsSlide * 100}%)`;
+            
+            // Update dot indicators
+            dots.forEach((dot, index) => {
+                if (index === currentNewsSlide) {
+                    dot.classList.add('bg-bluerep-blue');
+                    dot.classList.remove('bg-gray-300', 'bg-gray-400');
+                } else {
+                    dot.classList.remove('bg-bluerep-blue');
+                    dot.classList.add('bg-gray-300');
+                }
+            });
+        }
+        
+        // Handle news swipe gestures
+        function handleNewsSwipe() {
+            const swipeThreshold = 50;
+            const diff = newsTouchStartX - newsTouchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    const nextBtn = document.getElementById('news-next');
+                    if (nextBtn) nextBtn.click();
+                } else {
+                    // Swipe right - previous slide
+                    const prevBtn = document.getElementById('news-prev');
+                    if (prevBtn) prevBtn.click();
+                }
+            }
+        }
+        
+        // News auto-play functionality
+        function startNewsAutoPlay() {
+            const totalSlides = document.querySelectorAll('.news-carousel-dot').length;
+            if (totalSlides <= 1) return;
+            
+            newsAutoPlayInterval = setInterval(() => {
+                currentNewsSlide = (currentNewsSlide + 1) % totalSlides;
+                updateNewsCarousel();
+            }, 5000); // 5 second delay for news
+        }
+        
+        function resetNewsAutoPlay() {
+            if (newsAutoPlayInterval) {
+                clearInterval(newsAutoPlayInterval);
+                startNewsAutoPlay();
+            }
+        }
+        
+        // Load content when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMoments();
+            loadNews();
+            loadEvents();
+        });
+        
+        // Contact Form Submission
+        const contactForm = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                
+                // Show loading state
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+                formStatus.className = 'hidden';
+                
+                try {
+                    // Get form data
+                    const formData = new FormData(contactForm);
+                    const contactData = {
+                        first_name: formData.get('first_name'),
+                        last_name: formData.get('last_name'),
+                        email: formData.get('email'),
+                        subject: formData.get('subject'),
+                        message: formData.get('message'),
+                        created_at: new Date().toISOString()
+                    };
+                    
+                    // Send to Supabase
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/contacts`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        },
+                        body: JSON.stringify(contactData)
+                    });
+                    
+                    if (response.ok) {
+                        // Success
+                        formStatus.className = 'block text-center p-4 rounded-lg bg-green-100 text-green-800 border border-green-200';
+                        formStatus.textContent = 'Thank you! Your message has been sent successfully. We\'ll get back to you soon.';
+                        contactForm.reset();
+                    } else {
+                        throw new Error('Failed to send message');
+                    }
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    formStatus.className = 'block text-center p-4 rounded-lg bg-red-100 text-red-800 border border-red-200';
+                    formStatus.textContent = 'Sorry, there was an error sending your message. Please try again later.';
+                } finally {
+                    // Reset button state
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                }
+            });
         }
     </script>
 </body>

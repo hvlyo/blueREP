@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchandise - Ateneo Blue Repertory</title>
+    <meta name="description" content="Shop official Ateneo Blue Repertory merchandise and show your support for the arts.">
+    <link rel="icon" type="image/png" href="/assets/black_favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bluerep-blue: #0e143c;
+            --light-purple: #ededf7;
+            --gradient: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);
+        }
+        
+        /* Custom Fonts */
+        .font-fjalla { font-family: 'FjallaOne-Regular', 'Inter', sans-serif; }
+        .font-lehigh { font-family: 'Lehigh-Personal-Bold', 'Inter', sans-serif; }
+        .font-proxima { font-family: 'ProximaNova-Regular', 'Inter', sans-serif; }
+        .font-proxima-bold { font-family: 'ProximaNova-Bold', 'Inter', sans-serif; }
+        .font-proxima-semibold { font-family: 'ProximaNova-SemiBold', 'Inter', sans-serif; }
+        
+        /* Custom Colors */
+        .text-bluerep-blue { color: #0e143c; }
+        .bg-bluerep-blue { background-color: #0e143c; }
+        .text-light-purple { color: #ededf7; }
+        .bg-light-purple { background-color: #ededf7; }
+        
+        /* Navigation Styles */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #0e143c;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active {
+            background-color: #0e143c !important;
+            color: #ededf7 !important;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link.active::after {
+            display: none;
+        }
+        
+        /* Navbar styling */
+        #navbar {
+            background: transparent;
+            backdrop-filter: blur(10px);
+        }
+        
+        #navbar.scrolled {
+            background: #ededf7;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: var(--bluerep-blue);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--bluerep-blue);
+            box-shadow: 0 4px 16px rgba(14, 20, 60, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 32px rgba(14, 20, 60, 0.4), 0 0 0 4px rgba(14, 20, 60, 0.1);
+            background: white;
+            color: var(--bluerep-blue);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #0e143c;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #0e143c;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-secondary:hover {
+            background: #0e143c;
+            color: #ededf7;
+            transform: translateY(-2px);
+        }
+        
+        /* Product Card Styles */
+        .product-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(14, 20, 60, 0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Focus Styles */
+        button:focus,
+        a:focus {
+            outline: 2px solid var(--light-purple);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="font-proxima text-gray-900">
+    <!-- Header/Navigation -->
+    <header id="navbar" class="sticky top-0 z-50 transition-all duration-300">
+        <nav class="w-full px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="index.html#top" class="cursor-pointer">
+                        <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-16 w-auto">
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Home</a>
+                    <a href="about.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">About</a>
+                    <a href="tickets.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Tickets</a>
+                    <a href="productions.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors">Productions</a>
+                    <a href="merchandise.html" class="nav-link font-proxima-semibold text-bluerep-blue hover:text-gray-700 transition-colors active">Merchandise</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-bluerep-blue" aria-label="Toggle mobile menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <a href="index.html#top" class="cursor-pointer">
+                        <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
+                    </a>
+                    <button id="close-menu-btn" class="p-2 text-bluerep-blue" aria-label="Close mobile menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <a href="index.html" class="nav-link font-proxima text-bluerep-blue py-2">Home</a>
+                    <a href="about.html" class="nav-link font-proxima text-bluerep-blue py-2">About</a>
+                    <a href="tickets.html" class="nav-link font-proxima text-bluerep-blue py-2">Tickets</a>
+                    <a href="productions.html" class="nav-link font-proxima text-bluerep-blue py-2">Productions</a>
+                    <a href="merchandise.html" class="nav-link font-proxima text-bluerep-blue py-2 active">Merchandise</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-blue-50 to-purple-50 py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-fjalla text-bluerep-blue mb-6 fade-in">
+                Merchandise
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8 fade-in">
+                Show your support with official blueREP merchandise
+            </p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-fjalla text-bluerep-blue mb-12 text-center fade-in">
+                    Official Merchandise
+                </h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Product 1 -->
+                    <div class="product-card bg-light-purple rounded-lg overflow-hidden fade-in">
+                        <div class="product-image">
+                            <span class="text-2xl font-lehigh">T-Shirt</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">blueREP Logo T-Shirt</h3>
+                            <p class="text-gray-600 mb-4">Comfortable cotton t-shirt featuring the official blueREP logo.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-bluerep-blue">₱500</span>
+                                <a href="#" class="btn-primary text-sm">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="product-card bg-light-purple rounded-lg overflow-hidden fade-in">
+                        <div class="product-image">
+                            <span class="text-2xl font-lehigh">Hoodie</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">blueREP Hoodie</h3>
+                            <p class="text-gray-600 mb-4">Warm and cozy hoodie perfect for showing your blueREP pride.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-bluerep-blue">₱800</span>
+                                <a href="#" class="btn-primary text-sm">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="product-card bg-light-purple rounded-lg overflow-hidden fade-in">
+                        <div class="product-image">
+                            <span class="text-2xl font-lehigh">Cap</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">blueREP Baseball Cap</h3>
+                            <p class="text-gray-600 mb-4">Stylish cap with embroidered blueREP logo.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-bluerep-blue">₱300</span>
+                                <a href="#" class="btn-primary text-sm">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 4 -->
+                    <div class="product-card bg-light-purple rounded-lg overflow-hidden fade-in">
+                        <div class="product-image">
+                            <span class="text-2xl font-lehigh">Tote Bag</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">blueREP Tote Bag</h3>
+                            <p class="text-gray-600 mb-4">Eco-friendly canvas tote bag with blueREP design.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-bluerep-blue">₱250</span>
+                                <a href="#" class="btn-primary text-sm">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 5 -->
+                    <div class="product-card bg-light-purple rounded-lg overflow-hidden fade-in">
+                        <div class="product-image">
+                            <span class="text-2xl font-lehigh">Sticker</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">blueREP Stickers</h3>
+                            <p class="text-gray-600 mb-4">Set of 5 high-quality vinyl stickers featuring blueREP designs.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-bluerep-blue">₱150</span>
+                                <a href="#" class="btn-primary text-sm">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 6 -->
+                    <div class="product-card bg-light-purple rounded-lg overflow-hidden fade-in">
+                        <div class="product-image">
+                            <span class="text-2xl font-lehigh">Water Bottle</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-lehigh text-bluerep-blue mb-2">blueREP Water Bottle</h3>
+                            <p class="text-gray-600 mb-4">Insulated stainless steel water bottle with blueREP branding.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-bluerep-blue">₱400</span>
+                                <a href="#" class="btn-primary text-sm">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-16 bg-bluerep-blue">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-fjalla text-white mb-8 fade-in">
+                Support the Arts
+            </h2>
+            <p class="text-xl text-light-purple mb-8 fade-in">
+                Your purchase helps support our theatrical productions and student artists
+            </p>
+            <a href="mailto:merchandise@bluerep.org" class="btn-secondary bg-white text-bluerep-blue hover:bg-light-purple">
+                Contact for Bulk Orders
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Ateneo Blue Repertory. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+        }
+        
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('open');
+        }
+        
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        closeMenuBtn.addEventListener('click', closeMobileMenu);
+        
+        // Close mobile menu when clicking on links
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all fade-in elements
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Set active page in navigation
+        function setActivePage() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Set active page on load
+        setActivePage();
+        
+        // Sticky navbar scroll behavior
+        const navbar = document.getElementById('navbar');
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    </script>
+</body>
+</html>
