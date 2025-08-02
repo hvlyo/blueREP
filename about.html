@@ -621,6 +621,7 @@
         .impact-card {
             transition: all 0.4s ease-in-out;
             transform: translateY(0);
+            padding: 1.5rem;
         }
         
         .impact-card:hover {
@@ -643,6 +644,51 @@
         
         .impact-card:hover .impact-description {
             color: #e2e8f0 !important;
+        }
+        
+        /* Mobile Responsive Impact Cards */
+        @media (max-width: 768px) {
+            .impact-card {
+                padding: 1rem;
+                min-height: 120px;
+            }
+            
+            .impact-value {
+                font-size: 1.5rem !important;
+                margin-bottom: 0.5rem;
+            }
+            
+            .impact-title {
+                font-size: 0.875rem !important;
+                margin-bottom: 0.25rem;
+            }
+            
+            .impact-description {
+                font-size: 0.75rem !important;
+                line-height: 1.2;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .impact-card {
+                padding: 0.75rem;
+                min-height: 100px;
+            }
+            
+            .impact-value {
+                font-size: 1.25rem !important;
+                margin-bottom: 0.25rem;
+            }
+            
+            .impact-title {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.25rem;
+            }
+            
+            .impact-description {
+                font-size: 0.625rem !important;
+                line-height: 1.1;
+            }
         }
         
         /* Reduced Motion Support */
@@ -900,7 +946,7 @@
                 </h2>
                 
                 <!-- Impact Cards Grid -->
-                <div id="impact-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 card-grid">
+                <div id="impact-cards" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 card-grid">
                     <!-- Cards will be loaded dynamically from Supabase -->
                 </div>
             </div>
@@ -1383,13 +1429,13 @@
                 
                 data.forEach((stat, index) => {
                     const card = document.createElement('div');
-                    card.className = 'card-item impact-card bg-white rounded-lg p-6 shadow-lg transition-all duration-300 fade-in';
+                    card.className = 'card-item impact-card bg-white rounded-lg shadow-lg transition-all duration-300 fade-in';
                     card.innerHTML = `
                         <div class="card-content text-center">
                             <div class="card-text">
-                                <div class="impact-value text-4xl font-fjalla text-bluerep-blue mb-4 transition-all duration-300">${stat.value}</div>
-                                <h3 class="impact-title text-xl font-lehigh text-bluerep-blue mb-3 transition-all duration-300">${stat.title}</h3>
-                                <p class="impact-description text-gray-600 font-proxima leading-relaxed transition-all duration-300">${stat.description}</p>
+                                <div class="impact-value text-2xl md:text-3xl lg:text-4xl font-fjalla text-bluerep-blue mb-2 md:mb-3 lg:mb-4 transition-all duration-300">${stat.value}</div>
+                                <h3 class="impact-title text-sm md:text-lg lg:text-xl font-lehigh text-bluerep-blue mb-1 md:mb-2 lg:mb-3 transition-all duration-300">${stat.title}</h3>
+                                <p class="impact-description text-xs md:text-sm lg:text-base text-gray-600 font-proxima leading-relaxed transition-all duration-300">${stat.description}</p>
                             </div>
                         </div>
                     `;
