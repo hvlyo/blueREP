@@ -1959,6 +1959,9 @@
             
             if (!track || totalSlides <= 1) return;
             
+            // Stop any existing autoplay before initializing
+            stopNewsAutoPlay();
+            
             // Set initial position
             currentNewsSlide = 0;
             updateNewsCarousel();
@@ -2006,7 +2009,7 @@
                 });
             }
             
-            // Start auto-play
+            // Start auto-play (responsive - only on desktop)
             startNewsAutoPlay();
         }
         
@@ -2063,6 +2066,12 @@
             const totalSlides = document.querySelectorAll('.news-carousel-dot').length;
             if (totalSlides <= 1) return;
             
+            // Check if we're on mobile - disable autoplay on mobile
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                return; // Don't start autoplay on mobile
+            }
+            
             newsAutoPlayInterval = setInterval(() => {
                 currentNewsSlide = (currentNewsSlide + 1) % totalSlides;
                 updateNewsCarousel();
@@ -2072,7 +2081,18 @@
         function resetNewsAutoPlay() {
             if (newsAutoPlayInterval) {
                 clearInterval(newsAutoPlayInterval);
-                startNewsAutoPlay();
+                // Only restart autoplay if not on mobile
+                const isMobile = window.innerWidth < 768;
+                if (!isMobile) {
+                    startNewsAutoPlay();
+                }
+            }
+        }
+        
+        function stopNewsAutoPlay() {
+            if (newsAutoPlayInterval) {
+                clearInterval(newsAutoPlayInterval);
+                newsAutoPlayInterval = null;
             }
         }
         
@@ -2081,15 +2101,36 @@
             loadMoments();
             loadNews();
             loadEvents();
+            
+            // Handle responsive autoplay on initial load
+            handleResponsiveNewsAutoplay();
         });
+        
+        // Handle responsive autoplay based on screen size
+        function handleResponsiveNewsAutoplay() {
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                stopNewsAutoPlay();
+            } else {
+                // Only start autoplay if there are multiple slides
+                const totalSlides = document.querySelectorAll('.news-carousel-dot').length;
+                if (totalSlides > 1) {
+                    startNewsAutoPlay();
+                }
+            }
+        }
         
         // Handle window resize for responsive carousel
         window.addEventListener('resize', function() {
             // Debounce the resize event
             clearTimeout(window.resizeTimeout);
             window.resizeTimeout = setTimeout(function() {
+                // Stop current autoplay
+                stopNewsAutoPlay();
                 // Reload news to adjust carousel layout
                 loadNews();
+                // Handle responsive autoplay after reload
+                setTimeout(handleResponsiveNewsAutoplay, 100);
             }, 250);
         });
         
