@@ -124,8 +124,20 @@
         /* Mobile Menu */
         .mobile-menu {
             transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-            background-color: #1D1E2C;
+            transition: transform 0.4s ease-in-out;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            height: 100vh;
+            width: 100vw;
+            right: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 1.5rem;
+            box-sizing: border-box;
         }
         
         .mobile-menu.open {
@@ -134,12 +146,91 @@
         
         /* Mobile Menu Overlay */
         .mobile-menu-overlay {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.9);
+            transition: opacity 0.3s ease-in-out;
         }
         
         .mobile-menu-overlay.active {
             opacity: 1;
             pointer-events: auto;
+        }
+        
+        /* Mobile Menu Content Styling */
+        .mobile-menu-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        
+        .mobile-menu-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-menu-nav {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .mobile-menu-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 500;
+            letter-spacing: 0.025em;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateX(20px);
+            animation: slideInLink 0.4s ease-out forwards;
+        }
+        
+        .mobile-menu-nav a:nth-child(1) { animation-delay: 0.1s; }
+        .mobile-menu-nav a:nth-child(2) { animation-delay: 0.2s; }
+        .mobile-menu-nav a:nth-child(3) { animation-delay: 0.3s; }
+        .mobile-menu-nav a:nth-child(4) { animation-delay: 0.4s; }
+        .mobile-menu-nav a:nth-child(5) { animation-delay: 0.5s; }
+        
+        .mobile-menu-nav a:hover {
+            color: #ededf7;
+            transform: translateX(10px);
+            border-bottom-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mobile-menu-close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+        
+        @keyframes slideInLink {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         /* Sticky Navbar */
@@ -185,24 +276,24 @@
         
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-8">
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-header">
                     <a href="index.html#top" class="cursor-pointer">
                         <img src="/assets/white_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
                     </a>
-                    <button id="close-menu-btn" class="p-2 text-white" aria-label="Close mobile menu">
+                    <button id="close-menu-btn" class="mobile-menu-close" aria-label="Close mobile menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
-                <div class="flex flex-col space-y-4">
-                    <a href="index.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Home</a>
-                    <a href="about.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">About</a>
-                    <a href="tickets.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Tickets</a>
-                    <a href="productions.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Productions</a>
-                    <a href="merchandise.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Merchandise</a>
-                </div>
+                <nav class="mobile-menu-nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="tickets.html">Tickets</a>
+                    <a href="productions.html">Productions</a>
+                    <a href="merchandise.html">Merchandise</a>
+                </nav>
             </div>
         </div>
         </nav>
