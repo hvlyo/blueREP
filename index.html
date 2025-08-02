@@ -182,8 +182,8 @@
             background: transparent;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
+            position: sticky !important;
+            top: 0 !important;
             left: 0;
             right: 0;
             z-index: 1000;
@@ -192,13 +192,23 @@
             -webkit-transition: all 0.3s ease;
             -moz-transition: all 0.3s ease;
             -o-transition: all 0.3s ease;
+            /* Ensure sticky positioning works */
+            display: block;
+            height: auto;
         }
         
         #navbar.scrolled {
-            background: #ededf7;
+            background: #ededf7 !important;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
+        }
+        
+        /* Debug styles to ensure sticky works */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 200vh; /* Ensure there's enough content to scroll */
         }
         
         /* Mobile Menu - Enhanced Cross-Browser Support */
@@ -1764,21 +1774,14 @@
         // Close mobile menu when clicking on links
         const mobileMenuLinks = mobileMenu.querySelectorAll('a');
         mobileMenuLinks.forEach(link => {
-            // Allow navigation to happen, just close menu after a short delay
+            // Simple approach - just close menu after navigation
             link.addEventListener('click', function(e) {
-                // Don't prevent default - let the link work normally
+                console.log('Mobile menu link clicked:', link.href);
+                // Let the link work normally, just close menu
                 setTimeout(() => {
                     closeMobileMenu();
-                }, 100);
+                }, 50);
             });
-            
-            // Also handle touch events for mobile
-            link.addEventListener('touchstart', function(e) {
-                // Don't prevent default - let the link work normally
-                setTimeout(() => {
-                    closeMobileMenu();
-                }, 100);
-            }, { passive: true });
         });
         
         // Close mobile menu on window resize (if screen becomes desktop)
@@ -1815,14 +1818,8 @@
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
             mobileMenuOverlay.setAttribute('aria-hidden', 'false');
             
-            // Enhanced body scroll prevention
+            // Store scroll position but don't fix body position
             const scrollY = window.scrollY;
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${scrollY}px`;
-            document.body.style.width = '100%';
-            
-            // Store scroll position for restoration
             document.body.dataset.scrollY = scrollY;
             
             // Focus management for accessibility
@@ -1852,17 +1849,6 @@
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
             mobileMenuOverlay.setAttribute('aria-hidden', 'true');
             
-            // Enhanced body scroll restoration
-            const scrollY = document.body.dataset.scrollY;
-            document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.top = '';
-            document.body.style.width = '';
-            
-            if (scrollY) {
-                window.scrollTo(0, parseInt(scrollY));
-            }
-            
             // Reset any inline styles on menu links
             const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
             menuLinks.forEach(link => {
@@ -1880,13 +1866,6 @@
             
             // Clear any stored data
             delete document.body.dataset.scrollY;
-            
-            // Force reflow to ensure sticky navbar works
-            setTimeout(() => {
-                document.body.style.display = 'none';
-                document.body.offsetHeight; // Force reflow
-                document.body.style.display = '';
-            }, 10);
         }
         
         function handleMenuKeydown(event) {
@@ -2001,11 +1980,14 @@
         
         function updateNavbarScroll() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            console.log('Scroll position:', scrollTop);
             
             if (scrollTop > 50) {
                 navbar.classList.add('scrolled');
+                console.log('Added scrolled class');
             } else {
                 navbar.classList.remove('scrolled');
+                console.log('Removed scrolled class');
             }
             
             lastScrollTop = scrollTop;
@@ -2016,7 +1998,10 @@
         window.addEventListener('resize', updateNavbarScroll);
         
         // Call once on load to set initial state
-        document.addEventListener('DOMContentLoaded', updateNavbarScroll);
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing navbar scroll');
+            updateNavbarScroll();
+        });
         
         // Add loading animation for hero section
         window.addEventListener('load', function() {
