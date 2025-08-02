@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Admin Dashboard - Ateneo Blue Repertory</title>
+    <meta name="description" content="Admin control panel for Ateneo Blue Repertory website management.">
+    <link rel="icon" type="image/png" href="/assets/black_favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Custom CSS Variables */
+        :root {
+            --bluerep-blue: #0e143c;
+            --light-purple: #ededf7;
+            --gradient: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);
+        }
+        
+        /* Base Styles */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            height: -webkit-fill-available;
+            height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--bluerep-blue);
+            overflow-x: hidden;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
+        
+        /* Custom Typography */
+        .font-fjalla {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-lehigh {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        
+        .font-proxima {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom Colors */
+        .bg-bluerep-blue {
+            background-color: var(--bluerep-blue);
+        }
+        
+        .bg-light-purple {
+            background-color: var(--light-purple);
+        }
+        
+        .text-bluerep-blue {
+            color: var(--bluerep-blue);
+        }
+        
+        .bg-gradient {
+            background: var(--gradient);
+        }
+        
+        /* Admin Dashboard Styles */
+        .admin-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: var(--bluerep-blue);
+        }
+        
+        .admin-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 1% auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            width: 95%;
+            max-width: 900px;
+            max-height: 95vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background-color: #f3f4f6;
+            color: #000;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--bluerep-blue);
+            font-size: 1.1rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+            line-height: 1.5;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--bluerep-blue);
+            box-shadow: 0 0 0 3px rgba(14, 20, 60, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-full {
+            grid-column: 1 / -1;
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: var(--bluerep-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary:hover {
+            background: #0a0f2a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 20, 60, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--bluerep-blue);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid var(--bluerep-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bluerep-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+        }
+        
+        /* Login Styles */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            padding: 1rem;
+        }
+        
+        .login-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--bluerep-blue);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Error States */
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Form Validation */
+        .form-input.error {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        .form-input.success {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 1% auto;
+                padding: 1rem;
+                width: 95%;
+            }
+        }
+        
+        /* Drag and Drop Styles */
+        .drag-drop-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .drag-drop-area.dragover {
+            border-color: var(--bluerep-blue);
+            background-color: rgba(14, 20, 60, 0.05);
+        }
+        
+        .drag-drop-area:hover {
+            border-color: var(--bluerep-blue);
+        }
+        
+        /* Table Styles */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .admin-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: var(--bluerep-blue);
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f9fafb;
+        }
+        
+        /* Filter Styles */
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+        }
+    </style>
+</head>
+<body class="font-proxima text-gray-900">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-card">
+            <div class="text-center mb-6">
+                <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-16 w-auto mx-auto mb-4">
+                <h1 class="text-2xl font-fjalla text-bluerep-blue">Admin Dashboard</h1>
+                <p class="text-gray-600 mt-2">Sign in to manage the website</p>
+            </div>
+            
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+                
+                <div>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" required>
+                </div>
+                
+                <button type="submit" class="btn-primary w-full">
+                    <span id="login-text">Sign In</span>
+                    <span id="login-spinner" class="spinner hidden"></span>
+                </button>
+            </form>
+            
+            <div id="login-error" class="mt-4 p-3 bg-red-100 text-red-700 rounded-lg hidden"></div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-12 w-auto">
+                        <h1 class="ml-4 text-xl font-fjalla text-bluerep-blue">Admin Dashboard</h1>
+                    </div>
+                    <button id="logout-btn" class="btn-secondary">Sign Out</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-fjalla text-bluerep-blue mb-2">Welcome back!</h2>
+                <p class="text-gray-600">Manage your website content and settings</p>
+            </div>
+
+            <!-- Admin Cards Grid -->
+            <div class="admin-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- News and Updates -->
+                <div class="admin-card" data-section="news">
+                    <div class="admin-card-icon bg-blue-500">
+                        📰
+                    </div>
+                    <h3 class="text-lg font-lehigh text-bluerep-blue mb-2">News and Updates</h3>
+                    <p class="text-gray-600 text-sm">Manage news articles and announcements</p>
+                </div>
+
+                <!-- Moments -->
+                <div class="admin-card" data-section="moments">
+                    <div class="admin-card-icon bg-purple-500">
+                        📸
+                    </div>
+                    <h3 class="text-lg font-lehigh text-bluerep-blue mb-2">Moments</h3>
+                    <p class="text-gray-600 text-sm">Manage photo gallery and memories</p>
+                </div>
+
+                <!-- Upcoming Shows and Events -->
+                <div class="admin-card" data-section="events">
+                    <div class="admin-card-icon bg-green-500">
+                        🎭
+                    </div>
+                    <h3 class="text-lg font-lehigh text-bluerep-blue mb-2">Shows & Events</h3>
+                    <p class="text-gray-600 text-sm">Manage upcoming productions and events</p>
+                </div>
+
+                <!-- Messages -->
+                <div class="admin-card" data-section="messages">
+                    <div class="admin-card-icon bg-yellow-500">
+                        💬
+                    </div>
+                    <h3 class="text-lg font-lehigh text-bluerep-blue mb-2">Messages</h3>
+                    <p class="text-gray-600 text-sm">View and manage contact form submissions</p>
+                </div>
+
+                <!-- Our Impact -->
+                <div class="admin-card" data-section="impact">
+                    <div class="admin-card-icon bg-red-500">
+                        📊
+                    </div>
+                    <h3 class="text-lg font-lehigh text-bluerep-blue mb-2">Our Impact</h3>
+                    <p class="text-gray-600 text-sm">Manage impact statistics and metrics</p>
+                </div>
+
+                <!-- Core Team Sections -->
+                <div class="admin-card" data-section="team-sections">
+                    <div class="admin-card-icon bg-indigo-500">
+                        🏢
+                    </div>
+                    <h3 class="text-lg font-lehigh text-bluerep-blue mb-2">Team Sections</h3>
+                    <p class="text-gray-600 text-sm">Manage organizational structure</p>
+                </div>
+
+                <!-- Core Team Members -->
+                <div class="admin-card" data-section="team-members">
+                    <div class="admin-card-icon bg-pink-500">
+                        👥
+                    </div>
+                    <h3 class="text-lg font-lehigh text-bluerep-blue mb-2">Team Members</h3>
+                    <p class="text-gray-600 text-sm">Manage team member profiles</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content max-w-md">
+            <div class="text-center">
+                <div class="mb-4">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2" id="confirmation-title">Confirm Deletion</h3>
+                    <p class="text-sm text-gray-500" id="confirmation-message">Are you sure you want to delete this item? This action cannot be undone.</p>
+                </div>
+                <div class="flex justify-center space-x-3">
+                    <button id="confirmation-cancel" class="btn-secondary">Cancel</button>
+                    <button id="confirmation-confirm" class="btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="admin.js"></script>
+</body>
+</html> 
