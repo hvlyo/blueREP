@@ -247,6 +247,9 @@
             transform-style: preserve-3d;
             /* Prevent scrolling on body when menu is open */
             overflow: hidden;
+            /* Ensure complete hiding */
+            visibility: hidden;
+            pointer-events: none;
         }
         
         .mobile-menu.open {
@@ -254,6 +257,18 @@
             -webkit-transform: translateX(0);
             -moz-transform: translateX(0);
             -ms-transform: translateX(0);
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        /* Ensure menu is completely hidden when closed */
+        .mobile-menu:not(.open) {
+            transform: translateX(100%) !important;
+            -webkit-transform: translateX(100%) !important;
+            -moz-transform: translateX(100%) !important;
+            -ms-transform: translateX(100%) !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
         
         /* Mobile Menu Overlay */
@@ -262,11 +277,22 @@
             transition: opacity 0.3s ease-in-out;
             -webkit-transition: opacity 0.3s ease-in-out;
             -moz-transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
         }
         
         .mobile-menu-overlay.active {
             opacity: 1;
             pointer-events: auto;
+            visibility: visible;
+        }
+        
+        /* Ensure overlay is completely hidden when not active */
+        .mobile-menu-overlay:not(.active) {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
         }
         
         /* Mobile Menu Content Styling */
@@ -405,10 +431,10 @@
             color: white !important;
             padding: 0.75rem;
             border-radius: 50%;
-            transition: all 0.3s ease;
-            -webkit-transition: all 0.3s ease;
-            -moz-transition: all 0.3s ease;
-            -o-transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            -o-transition: all 0.2s ease;
             cursor: pointer;
             display: -webkit-flex;
             display: -moz-flex;
@@ -423,32 +449,48 @@
             -ms-flex-pack: center;
             justify-content: center;
             /* Enhanced touch target size */
-            min-width: 44px;
-            min-height: 44px;
+            min-width: 48px;
+            min-height: 48px;
             /* Better visual feedback */
-            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+            -webkit-tap-highlight-color: transparent;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
             /* Ensure visibility */
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            /* Better contrast */
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Better contrast and stability */
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Prevent flickering */
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            /* Ensure proper stacking */
+            z-index: 10000;
         }
         
         .mobile-menu-close:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: scale(1.1);
-            -webkit-transform: scale(1.1);
-            -moz-transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05) translateZ(0);
+            -webkit-transform: scale(1.05) translateZ(0);
+            -moz-transform: scale(1.05) translateZ(0);
+            -ms-transform: scale(1.05) translateZ(0);
         }
         
         .mobile-menu-close:active {
-            transform: scale(0.95);
-            -webkit-transform: scale(0.95);
-            -moz-transform: scale(0.95);
+            transform: scale(0.98) translateZ(0);
+            -webkit-transform: scale(0.98) translateZ(0);
+            -moz-transform: scale(0.98) translateZ(0);
+            -ms-transform: scale(0.98) translateZ(0);
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Prevent any flickering on touch */
+        .mobile-menu-close:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
         }
         
         /* Enhanced Mobile Menu Button */
@@ -1668,8 +1710,41 @@
             addCrossBrowserEventListener(mobileMenuBtn, 'click', toggleMobileMenu);
         }
         
+        // Simplified close button handling to prevent flickering
         if (closeMenuBtn) {
-            addCrossBrowserEventListener(closeMenuBtn, 'click', closeMobileMenu);
+            let isClosing = false;
+            
+            // Use only click event for close button to prevent conflicts
+            closeMenuBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (!isClosing) {
+                    isClosing = true;
+                    closeMobileMenu();
+                    
+                    // Reset after a short delay to prevent rapid clicks
+                    setTimeout(() => {
+                        isClosing = false;
+                    }, 300);
+                }
+            });
+            
+            // Add touch event with proper handling
+            closeMenuBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (!isClosing) {
+                    isClosing = true;
+                    closeMobileMenu();
+                    
+                    // Reset after a short delay to prevent rapid touches
+                    setTimeout(() => {
+                        isClosing = false;
+                    }, 300);
+                }
+            }, { passive: false });
         }
         
         // Close mobile menu when clicking on overlay
@@ -1738,8 +1813,12 @@
         
         function closeMobileMenu() {
             console.log('Closing mobile menu');
+            
+            // Remove open class
             mobileMenu.classList.remove('open');
             mobileMenuOverlay.classList.remove('active');
+            
+            // Reset ARIA attributes
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
             mobileMenuOverlay.setAttribute('aria-hidden', 'true');
             
@@ -1754,13 +1833,32 @@
                 window.scrollTo(0, parseInt(scrollY));
             }
             
-            // Return focus to menu button
+            // Force complete cleanup of menu state
             setTimeout(() => {
+                // Ensure menu is completely hidden
+                mobileMenu.style.visibility = 'hidden';
+                mobileMenu.style.pointerEvents = 'none';
+                mobileMenu.style.transform = 'translateX(100%)';
+                mobileMenu.style.webkitTransform = 'translateX(100%)';
+                mobileMenu.style.mozTransform = 'translateX(100%)';
+                mobileMenu.style.msTransform = 'translateX(100%)';
+                
+                // Reset any inline styles on menu links
+                const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+                menuLinks.forEach(link => {
+                    link.style.opacity = '';
+                    link.style.transform = '';
+                });
+                
+                // Return focus to menu button
                 mobileMenuBtn.focus();
-            }, 100);
+            }, 400); // Wait for transition to complete
             
             // Remove focus trap
             mobileMenu.removeEventListener('keydown', handleMenuKeydown);
+            
+            // Clear any stored data
+            delete document.body.dataset.scrollY;
         }
         
         function handleMenuKeydown(event) {
@@ -2795,11 +2893,46 @@
                 return;
             }
             
+            // Force clean initial state
+            function ensureCleanMenuState() {
+                mobileMenu.classList.remove('open');
+                mobileMenuOverlay.classList.remove('active');
+                mobileMenu.style.visibility = 'hidden';
+                mobileMenu.style.pointerEvents = 'none';
+                mobileMenu.style.transform = 'translateX(100%)';
+                mobileMenu.style.webkitTransform = 'translateX(100%)';
+                mobileMenu.style.mozTransform = 'translateX(100%)';
+                mobileMenu.style.msTransform = 'translateX(100%)';
+                
+                // Reset body styles
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                
+                // Reset ARIA attributes
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                mobileMenuOverlay.setAttribute('aria-hidden', 'true');
+                
+                // Clear any stored data
+                delete document.body.dataset.scrollY;
+            }
+            
+            // Ensure clean state on load
+            ensureCleanMenuState();
+            
             // Test menu links
             const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
             console.log('Menu links found:', menuLinks.length);
             menuLinks.forEach((link, index) => {
                 console.log(`Link ${index + 1}:`, link.textContent, link.href);
+            });
+            
+            // Add additional cleanup on page visibility change
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    ensureCleanMenuState();
+                }
             });
         });
     </script>
