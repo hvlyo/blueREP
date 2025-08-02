@@ -79,6 +79,7 @@
         .mobile-menu {
             transform: translateX(100%);
             transition: transform 0.3s ease-in-out;
+            background-color: #1D1E2C;
         }
         
         .mobile-menu.open {
@@ -183,24 +184,24 @@
         </nav>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50">
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-8">
                     <a href="index.html#top" class="cursor-pointer">
-                        <img src="/assets/blue_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
+                        <img src="/assets/white_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
                     </a>
-                    <button id="close-menu-btn" class="p-2 text-bluerep-blue" aria-label="Close mobile menu">
+                    <button id="close-menu-btn" class="p-2 text-white" aria-label="Close mobile menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
                 <div class="flex flex-col space-y-4">
-                    <a href="index.html" class="nav-link font-proxima text-bluerep-blue py-2">Home</a>
-                    <a href="about.html" class="nav-link font-proxima text-bluerep-blue py-2">About</a>
-                    <a href="tickets.html" class="nav-link font-proxima text-bluerep-blue py-2 active">Tickets</a>
-                    <a href="productions.html" class="nav-link font-proxima text-bluerep-blue py-2">Productions</a>
-                    <a href="merchandise.html" class="nav-link font-proxima text-bluerep-blue py-2">Merchandise</a>
+                    <a href="index.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Home</a>
+                    <a href="about.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">About</a>
+                    <a href="tickets.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2 active">Tickets</a>
+                    <a href="productions.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Productions</a>
+                    <a href="merchandise.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Merchandise</a>
                 </div>
             </div>
         </div>
