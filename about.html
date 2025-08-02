@@ -132,6 +132,16 @@
             transform: translateX(0);
         }
         
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
         /* Sticky Navbar */
         header.scrolled {
             background: rgba(237, 237, 247, 0.95);
@@ -170,28 +180,31 @@
                 </button>
             </div>
             
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50">
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-8">
-                        <a href="index.html#top" class="cursor-pointer">
-                            <img src="/assets/white_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
-                        </a>
-                        <button id="close-menu-btn" class="p-2 text-white" aria-label="Close mobile menu">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="flex flex-col space-y-4">
-                        <a href="index.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Home</a>
-                        <a href="about.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">About</a>
-                        <a href="tickets.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Tickets</a>
-                        <a href="productions.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Productions</a>
-                        <a href="merchandise.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Merchandise</a>
-                    </div>
+                    <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu-overlay" class="mobile-menu-overlay md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none opacity-0 transition-opacity duration-300"></div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <a href="index.html#top" class="cursor-pointer">
+                        <img src="/assets/white_logo.svg" alt="blueREP Logo" class="h-10 w-auto">
+                    </a>
+                    <button id="close-menu-btn" class="p-2 text-white" aria-label="Close mobile menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <a href="index.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Home</a>
+                    <a href="about.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">About</a>
+                    <a href="tickets.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Tickets</a>
+                    <a href="productions.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Productions</a>
+                    <a href="merchandise.html" class="nav-link font-proxima text-white hover:text-gray-200 py-2">Merchandise</a>
                 </div>
             </div>
+        </div>
         </nav>
     </header>
 
@@ -266,17 +279,31 @@
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const closeMenuBtn = document.getElementById('close-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
         
         function toggleMobileMenu() {
             mobileMenu.classList.toggle('open');
+            mobileMenuOverlay.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (mobileMenu.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         }
         
         function closeMobileMenu() {
             mobileMenu.classList.remove('open');
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
         
         mobileMenuBtn.addEventListener('click', toggleMobileMenu);
         closeMenuBtn.addEventListener('click', closeMobileMenu);
+        
+        // Close mobile menu when clicking on overlay
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
         
         // Close mobile menu when clicking on links
         const mobileMenuLinks = mobileMenu.querySelectorAll('a');
