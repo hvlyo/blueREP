@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Mobile Navigation Debug Test</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Debug-specific styles */
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 10000;
+            max-width: 300px;
+        }
+        
+        .debug-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        
+        .debug-button:hover {
+            background: #0056b3;
+        }
+        
+        /* Mobile Menu Styles (simplified for testing) */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        .mobile-menu-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 50px;
+        }
+        
+        .mobile-menu-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            text-align: center;
+            min-height: 48px;
+            min-width: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .menu-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <h3>Mobile Navigation Debug</h3>
+        <div id="device-info"></div>
+        <div id="touch-info"></div>
+        <div id="menu-status">Menu: Closed</div>
+        <div id="link-clicks"></div>
+        <button class="debug-button" onclick="testMenu()">Test Menu</button>
+        <button class="debug-button" onclick="logDeviceInfo()">Log Device Info</button>
+    </div>
+    
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-8">Mobile Navigation Debug Test</h1>
+        
+        <div class="mb-8">
+            <button id="mobile-menu-btn" class="menu-btn">Open Mobile Menu</button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-gray-100 p-4 rounded">
+                <h2 class="text-xl font-bold mb-4">Test Instructions</h2>
+                <ul class="list-disc pl-4 space-y-2">
+                    <li>Click the "Open Mobile Menu" button</li>
+                    <li>Try clicking menu items</li>
+                    <li>Check if navigation works</li>
+                    <li>Check console for debug info</li>
+                </ul>
+            </div>
+            
+            <div class="bg-gray-100 p-4 rounded">
+                <h2 class="text-xl font-bold mb-4">Expected Behavior</h2>
+                <ul class="list-disc pl-4 space-y-2">
+                    <li>Menu should slide in from right</li>
+                    <li>Menu items should be clickable</li>
+                    <li>Links should navigate to correct pages</li>
+                    <li>Console should show debug info</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-8">
+            <h2 class="text-xl font-bold mb-4">Test Content</h2>
+            <p class="mb-4">This page is designed to test mobile navigation functionality across different devices and browsers.</p>
+            <div class="h-96 bg-gray-200 rounded flex items-center justify-center">
+                <p class="text-gray-600">Scroll down to test sticky behavior</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu">
+        <button id="close-menu-btn" class="close-btn">&times;</button>
+        <nav class="mobile-menu-nav">
+            <a href="index.html" onclick="logClick('Home - index.html')">Home</a>
+            <a href="about.html" onclick="logClick('About - about.html')">About</a>
+            <a href="tickets.html" onclick="logClick('Tickets - tickets.html')">Tickets</a>
+            <a href="productions.html" onclick="logClick('Productions - productions.html')">Productions</a>
+            <a href="merchandise.html" onclick="logClick('Merchandise - merchandise.html')">Merchandise</a>
+        </nav>
+    </div>
+    
+    <script>
+        // Debug variables
+        let menuOpen = false;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        // DOM elements
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuStatus = document.getElementById('menu-status');
+        const deviceInfo = document.getElementById('device-info');
+        const touchInfo = document.getElementById('touch-info');
+        const linkClicks = document.getElementById('link-clicks');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            logDeviceInfo();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Menu button events
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', toggleMenu);
+                mobileMenuBtn.addEventListener('touchstart', handleTouchStart, { passive: false });
+                mobileMenuBtn.addEventListener('touchend', handleTouchEnd, { passive: false });
+            }
+            
+            // Close button events
+            if (closeMenuBtn) {
+                closeMenuBtn.addEventListener('click', closeMenu);
+                closeMenuBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    closeMenu();
+                }, { passive: false });
+            }
+            
+            // Menu item events
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    console.log('Link clicked:', this.href);
+                    console.log('Link text:', this.textContent);
+                    logClick(`Clicked: ${this.textContent} -> ${this.href}`);
+                    
+                    // Let the link work normally
+                    setTimeout(() => {
+                        console.log('Navigating to:', this.href);
+                        window.location.href = this.href;
+                    }, 100);
+                });
+                
+                link.addEventListener('touchstart', function(e) {
+                    console.log('Link touched:', this.href);
+                    console.log('Link text:', this.textContent);
+                    logClick(`Touched: ${this.textContent} -> ${this.href}`);
+                }, { passive: false });
+            });
+            
+            // Window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768 && menuOpen) {
+                    closeMenu();
+                }
+            });
+            
+            // Touch events for swipe
+            mobileMenu.addEventListener('touchstart', handleTouchStart, { passive: false });
+            mobileMenu.addEventListener('touchend', handleTouchEnd, { passive: false });
+        }
+        
+        function handleTouchStart(e) {
+            touchStartX = e.touches[0].clientX;
+            touchInfo.textContent = `Touch Start: ${touchStartX}`;
+        }
+        
+        function handleTouchEnd(e) {
+            touchEndX = e.changedTouches[0].clientX;
+            const swipeDistance = touchStartX - touchEndX;
+            touchInfo.textContent = `Touch End: ${touchEndX}, Swipe: ${swipeDistance}`;
+            
+            // Close menu on right swipe (negative distance)
+            if (swipeDistance < -50 && menuOpen) {
+                closeMenu();
+            }
+        }
+        
+        function toggleMenu() {
+            if (menuOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        }
+        
+        function openMenu() {
+            console.log('Opening menu');
+            mobileMenu.classList.add('open');
+            menuOpen = true;
+            menuStatus.textContent = 'Menu: Open';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMenu() {
+            console.log('Closing menu');
+            mobileMenu.classList.remove('open');
+            menuOpen = false;
+            menuStatus.textContent = 'Menu: Closed';
+            document.body.style.overflow = '';
+        }
+        
+        function logClick(item) {
+            console.log(`Menu item clicked: ${item}`);
+            linkClicks.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${item}</div>`;
+        }
+        
+        function logDeviceInfo() {
+            const info = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine,
+                screenWidth: screen.width,
+                screenHeight: screen.height,
+                windowWidth: window.innerWidth,
+                windowHeight: window.innerHeight,
+                devicePixelRatio: window.devicePixelRatio,
+                touchSupport: 'ontouchstart' in window,
+                maxTouchPoints: navigator.maxTouchPoints || 0
+            };
+            
+            deviceInfo.innerHTML = `
+                <div><strong>Platform:</strong> ${info.platform}</div>
+                <div><strong>Screen:</strong> ${info.screenWidth}x${info.screenHeight}</div>
+                <div><strong>Window:</strong> ${info.windowWidth}x${info.innerHeight}</div>
+                <div><strong>Touch:</strong> ${info.touchSupport ? 'Yes' : 'No'} (${info.maxTouchPoints} points)</div>
+                <div><strong>Pixel Ratio:</strong> ${info.devicePixelRatio}</div>
+            `;
+            
+            console.log('Device Info:', info);
+        }
+        
+        function testMenu() {
+            console.log('Testing menu functionality...');
+            openMenu();
+            setTimeout(() => {
+                closeMenu();
+                console.log('Menu test completed');
+            }, 1000);
+        }
+        
+        // Log initial state
+        console.log('Mobile Navigation Debug initialized');
+    </script>
+</body>
+</html> 

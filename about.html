@@ -18,6 +18,9 @@
     <link rel="icon" type="image/png" href="/assets/black_favicon.png">
     <link rel="apple-touch-icon" href="/assets/black_favicon.png">
     
+    <!-- Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
     <!-- Custom Styles -->
     <style>
         /* Custom CSS Variables */
@@ -88,6 +91,10 @@
             color: var(--bluerep-blue);
         }
         
+        .text-bluerep-purple {
+            color: var(--light-purple);
+        }
+        
         .bg-gradient {
             background: var(--gradient);
         }
@@ -142,7 +149,7 @@
             top: 0 !important;
             left: 0;
             right: 0;
-            z-index: 1000;
+            z-index: 99999;
             width: 100%;
             transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
@@ -151,6 +158,71 @@
             /* Ensure sticky positioning works */
             display: block;
             height: auto;
+            /* Force navbar to stay on top of all content */
+            isolation: isolate;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+        }
+        
+        #navbar.scrolled {
+            background: #ededf7 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+        
+        /* Ensure sections don't interfere with sticky positioning */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Force navbar to be above all sections */
+        #navbar {
+            z-index: 99999 !important;
+        }
+        
+        /* Additional fixes for sticky header issues */
+        #navbar {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 99999 !important;
+            /* Force new stacking context */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            /* Ensure it's always on top */
+            isolation: isolate;
+        }
+        
+        /* Ensure no other elements interfere with sticky positioning */
+        body > *:not(#navbar) {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Remove any potential interference from sections */
+        section {
+            position: relative;
+            z-index: 1;
+            /* Ensure sections don't create new stacking contexts that interfere */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+        }
+        
+        /* Force navbar to always be on top */
+        #navbar {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 99999 !important;
+            background: transparent;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         #navbar.scrolled {
@@ -165,34 +237,43 @@
             transform: translateX(100%);
             -webkit-transform: translateX(100%);
             -moz-transform: translateX(100%);
+            -ms-transform: translateX(100%);
             transition: transform 0.4s ease-in-out;
             -webkit-transition: transform 0.4s ease-in-out;
             -moz-transition: transform 0.4s ease-in-out;
+            -o-transition: transform 0.4s ease-in-out;
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            /* iOS Safari viewport height fix */
+            /* Enhanced viewport height handling */
             height: 100vh !important;
+            height: 100dvh !important;
             height: -webkit-fill-available !important;
             height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
             min-height: 100vh !important;
+            min-height: 100dvh !important;
             min-height: -webkit-fill-available !important;
             width: 100vw !important;
+            width: 100dvw !important;
             right: 0;
             top: 0;
             display: -webkit-flex;
             display: -moz-flex;
+            display: -ms-flexbox;
             display: flex;
             -webkit-flex-direction: column;
             -moz-flex-direction: column;
+            -ms-flex-direction: column;
             flex-direction: column;
             -webkit-justify-content: flex-start;
             -moz-justify-content: flex-start;
+            -ms-flex-pack: start;
             justify-content: flex-start;
             -webkit-align-items: flex-start;
             -moz-align-items: flex-start;
+            -ms-flex-align: start;
             align-items: flex-start;
-            /* iOS Safari safe area support */
+            /* Enhanced safe area support */
             padding: 1.5rem;
             padding-top: calc(1.5rem + env(safe-area-inset-top));
             padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
@@ -205,13 +286,25 @@
             z-index: 9999;
             /* Ensure proper stacking context */
             -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
             transform-style: preserve-3d;
+            /* Prevent scrolling on body when menu is open */
+            overflow: hidden;
         }
         
         .mobile-menu.open {
             transform: translateX(0);
             -webkit-transform: translateX(0);
             -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        .mobile-menu:not(.open) {
+            transform: translateX(100%) !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
         
         /* Mobile Menu Overlay */
@@ -220,11 +313,22 @@
             transition: opacity 0.3s ease-in-out;
             -webkit-transition: opacity 0.3s ease-in-out;
             -moz-transition: opacity 0.3s ease-in-out;
+            -o-transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
         }
         
         .mobile-menu-overlay.active {
             opacity: 1;
             pointer-events: auto;
+            visibility: visible;
+        }
+        
+        .mobile-menu-overlay:not(.active) {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
         }
         
         /* Mobile Menu Content Styling */
@@ -290,14 +394,23 @@
             animation: slideInLink 0.4s ease-out forwards;
             -webkit-animation: slideInLink 0.4s ease-out forwards;
             -moz-animation: slideInLink 0.4s ease-out forwards;
-            /* Improved touch target size */
-            min-height: 44px;
+            /* Enhanced touch target size for better accessibility */
+            min-height: 48px;
+            min-width: 48px;
             display: -webkit-flex;
             display: -moz-flex;
             display: flex;
             -webkit-align-items: center;
             -moz-align-items: center;
             align-items: center;
+            /* Enhanced touch feedback */
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* Ensure proper cursor */
+            cursor: pointer;
         }
         
         .mobile-menu-nav a:nth-child(1) { 
@@ -380,13 +493,28 @@
         
         /* Enhanced Mobile Menu Button */
         #mobile-menu-btn {
-            min-width: 44px;
-            min-height: 44px;
-            -webkit-tap-highlight-color: transparent;
+            min-width: 48px;
+            min-height: 48px;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            /* Ensure proper focus states */
+            outline: none;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+        }
+        
+        #mobile-menu-btn:hover {
+            background-color: rgba(14, 20, 60, 0.1);
+            transform: scale(1.05);
+        }
+        
+        #mobile-menu-btn:active {
+            transform: scale(0.95);
         }
         
         @keyframes slideInLink {
@@ -449,18 +577,162 @@
             }
         }
         
+        /* Fade-in Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            -webkit-transform: translateY(30px);
+            -moz-transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            -webkit-transition: opacity 0.6s ease, transform 0.6s ease;
+            -moz-transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            -webkit-transform: translateY(0);
+            -moz-transform: translateY(0);
+        }
+        
+        /* Card Alignment CSS */
+        .card-grid {
+            display: grid;
+            align-items: stretch;
+        }
+        
+        .card-item {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-text {
+            flex: 1;
+        }
+        
+        /* Impact Cards Hover Effects */
+        .impact-card {
+            transition: all 0.4s ease-in-out;
+            transform: translateY(0);
+        }
+        
+        .impact-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%) !important;
+            box-shadow: 0 20px 40px rgba(94, 107, 192, 0.3);
+        }
+        
+        .impact-card:hover .impact-value {
+            color: #ffffff !important;
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .impact-card:hover .impact-title {
+            color: #ffffff !important;
+            font-weight: 700;
+        }
+        
+        .impact-card:hover .impact-description {
+            color: #e2e8f0 !important;
+        }
+        
         /* Reduced Motion Support */
         @media (prefers-reduced-motion: reduce) {
             .mobile-menu,
             .mobile-menu-nav a,
             .mobile-menu-close,
-            .mobile-menu-overlay {
+            .mobile-menu-overlay,
+            .fade-in {
                 transition: none !important;
                 -webkit-transition: none !important;
                 -moz-transition: none !important;
                 animation: none !important;
                 -webkit-animation: none !important;
                 -moz-animation: none !important;
+            }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .impact-wheel-container {
+                height: 400px;
+            }
+            
+            .impact-wheel {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .impact-card {
+                width: 250px;
+                height: 180px;
+                transform-origin: 50% 50% -150px;
+                -webkit-transform-origin: 50% 50% -150px;
+                -moz-transform-origin: 50% 50% -150px;
+            }
+            
+            .impact-card-content {
+                padding: 1.5rem;
+            }
+            
+            .impact-nav-btn {
+                width: 50px;
+                height: 50px;
+                min-width: 44px;
+                min-height: 44px;
+            }
+            
+            .impact-nav-left {
+                left: -60px;
+            }
+            
+            .impact-nav-right {
+                right: -60px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .impact-wheel-container {
+                height: 350px;
+            }
+            
+            .impact-wheel {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .impact-card {
+                width: 200px;
+                height: 150px;
+                transform-origin: 50% 50% -125px;
+                -webkit-transform-origin: 50% 50% -125px;
+                -moz-transform-origin: 50% 50% -125px;
+            }
+            
+            .impact-card-content {
+                padding: 1rem;
+            }
+            
+            .impact-nav-btn {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .impact-nav-left {
+                left: -50px;
+            }
+            
+            .impact-nav-right {
+                right: -50px;
             }
         }
     </style>
@@ -499,7 +771,7 @@
         <div id="mobile-menu-overlay" class="mobile-menu-overlay md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none opacity-0 transition-opacity duration-300" aria-hidden="true"></div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-full shadow-lg z-50" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
             <div class="mobile-menu-content">
                 <div class="mobile-menu-header">
                     <a href="index.html#top" class="cursor-pointer" aria-label="Go to homepage">
@@ -523,67 +795,243 @@
         </nav>
     </header>
 
-    <!-- About Section -->
-    <section id="about" class="bg-white">
-        <div class="container mx-auto px-4 py-16">
-            <div class="max-w-6xl mx-auto fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <!-- Left Side - Image -->
-                    <div class="order-2 lg:order-1">
-                        <img src="/assets/aboutus.jpg" alt="About blueREP" class="w-full h-auto rounded-lg shadow-lg">
+    <!-- Hero Section -->
+    <section id="hero" class="relative overflow-hidden text-white py-32" style="background: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%);">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-5xl mx-auto text-center fade-in">
+                <div class="mb-8">
+                    <h1 class="text-5xl md:text-7xl font-fjalla mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                        About Us
+                    </h1>
+                </div>
+                <h2 class="text-2xl md:text-4xl font-lehigh mb-8 leading-relaxed">
+                    Ateneo Blue Repertory is the university's premier musical theatre organization, dedicated to bold, student-led storytelling on stage.
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision and Mission Section -->
+    <section id="vision-mission" class="bg-white py-24 relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <!-- Vision -->
+                    <div class="fade-in group card-item">
+                        <div class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 card-content">
+                            <h2 class="text-4xl md:text-5xl font-lehigh text-bluerep-blue mb-8">
+                                Vision
+                            </h2>
+                            <div class="space-y-6 card-text">
+                                <div class="flex items-start space-x-4 group/item hover:bg-white hover:shadow-md p-3 rounded-lg transition-all duration-200">
+                                    <div class="w-3 h-3 bg-bluerep-blue rounded-full mt-3 flex-shrink-0 animate-pulse"></div>
+                                    <p class="text-lg font-proxima text-gray-700 group-hover/item:text-bluerep-blue transition-colors">
+                                        To be the premier college musical theater arts organization in the Philippines
+                                    </p>
+                                </div>
+                                <div class="flex items-start space-x-4 group/item hover:bg-white hover:shadow-md p-3 rounded-lg transition-all duration-200">
+                                    <div class="w-3 h-3 bg-bluerep-blue rounded-full mt-3 flex-shrink-0 animate-pulse"></div>
+                                    <p class="text-lg font-proxima text-gray-700 group-hover/item:text-bluerep-blue transition-colors">
+                                        To mold a holistic and disciplined community of artists in the spirit of the Ateneo's pursuit of magis
+                                    </p>
+                                </div>
+                                <div class="flex items-start space-x-4 group/item hover:bg-white hover:shadow-md p-3 rounded-lg transition-all duration-200">
+                                    <div class="w-3 h-3 bg-bluerep-blue rounded-full mt-3 flex-shrink-0 animate-pulse"></div>
+                                    <p class="text-lg font-proxima text-gray-700 group-hover/item:text-bluerep-blue transition-colors">
+                                        To bring about personal development and societal awareness through its productions
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- Right Side - Content -->
-                    <div class="order-1 lg:order-2">
-                        <h2 class="text-3xl md:text-4xl font-lehigh text-black mb-6">
-                            About Us
-                        </h2>
-                        <p class="text-lg md:text-xl font-proxima text-black leading-relaxed">
-                            Ateneo Blue Repertory (blueREP) is the <span class="font-bold" style="color: #0e143c;">premier musical theatre organization</span> of the Ateneo de Manila University.<br><br>
-                            Today, blueREP continues to hone its members in the fields of <span class="font-bold" style="color: #0e143c;">performance, production, and theatre management</span>, aiming to mold a holistic and disciplined community of artists within the university. With passion, the organization endeavors to immerse its audiences in shows that communicate relevant messages, and to inspire in them creativity, joy, and imagination unique to musical theatre.
-                        </p>
+                    <!-- Mission -->
+                    <div class="fade-in group card-item">
+                        <div class="bg-gradient-to-br from-purple-50 to-blue-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 card-content">
+                            <h2 class="text-4xl md:text-5xl font-lehigh text-bluerep-blue mb-8">
+                                Mission
+                            </h2>
+                            <div class="space-y-6 card-text">
+                                <div class="flex items-start space-x-4 group/item hover:bg-white hover:shadow-md p-3 rounded-lg transition-all duration-200">
+                                    <div class="w-3 h-3 bg-bluerep-blue rounded-full mt-3 flex-shrink-0 animate-pulse"></div>
+                                    <p class="text-lg font-proxima text-gray-700 group-hover/item:text-bluerep-blue transition-colors">
+                                        To train members in the fields of performance, production, and theatre management
+                                    </p>
+                                </div>
+                                <div class="flex items-start space-x-4 group/item hover:bg-white hover:shadow-md p-3 rounded-lg transition-all duration-200">
+                                    <div class="w-3 h-3 bg-bluerep-blue rounded-full mt-3 flex-shrink-0 animate-pulse"></div>
+                                    <p class="text-lg font-proxima text-gray-700 group-hover/item:text-bluerep-blue transition-colors">
+                                        To produce high-quality productions, projects, and services
+                                    </p>
+                                </div>
+                                <div class="flex items-start space-x-4 group/item hover:bg-white hover:shadow-md p-3 rounded-lg transition-all duration-200">
+                                    <div class="w-3 h-3 bg-bluerep-blue rounded-full mt-3 flex-shrink-0 animate-pulse"></div>
+                                    <p class="text-lg font-proxima text-gray-700 group-hover/item:text-bluerep-blue transition-colors">
+                                        To immerse constituents and audiences in shows that communicate a relevant message
+                                    </p>
+                                </div>
+                                <div class="flex items-start space-x-4 group/item hover:bg-white hover:shadow-md p-3 rounded-lg transition-all duration-200">
+                                    <div class="w-3 h-3 bg-bluerep-blue rounded-full mt-3 flex-shrink-0 animate-pulse"></div>
+                                    <p class="text-lg font-proxima text-gray-700 group-hover/item:text-bluerep-blue transition-colors">
+                                        To share talents and inspire creativity, joy, and imagination unique to musical theater
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Our Impact Section -->
+    <section id="impact" class="bg-gradient-to-br from-light-purple to-blue-50 py-24 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-10 left-10 w-32 h-32 border-2 border-bluerep-blue rounded-full"></div>
+            <div class="absolute top-20 right-20 w-24 h-24 border-2 border-bluerep-blue rounded-full"></div>
+            <div class="absolute bottom-10 left-1/3 w-40 h-40 border-2 border-bluerep-blue rounded-full"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-lehigh text-bluerep-blue mb-16 text-center">
+                    Our Impact
+                </h2>
+                
+                <!-- Impact Cards Grid -->
+                <div id="impact-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 card-grid">
+                    <!-- Cards will be loaded dynamically from Supabase -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="bg-white py-24 relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-lehigh text-bluerep-blue text-center mb-16">
+                    Our Services
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Training -->
+                    <div class="fade-in group card-item">
+                        <div class="bg-bluerep-blue p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1 card-content">
+                            <h3 class="text-2xl font-lehigh text-bluerep-purple mb-4">Training</h3>
+                            <p class="text-bluerep-purple font-proxima mb-4 leading-relaxed card-text">
+                                blueREP offers workshops in performance (music, acting, movement, improv), production (stage management, lighting/sound design, set/props, costume/makeup), and theatre management (Photoshop/design, logistics, documentation, external relations).
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Gigs -->
+                    <div class="fade-in group card-item">
+                        <div class="bg-bluerep-blue p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 hover:-rotate-1 card-content">
+                            <h3 class="text-2xl font-lehigh text-bluerep-purple mb-4">Gigs</h3>
+                            <p class="text-bluerep-purple font-proxima mb-4 leading-relaxed card-text">
+                                Hire blueREP for lively performances at events, weddings, or company functions. Music and dance customized for the occasion. Same caliber as our mainstage productions.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Ushering -->
+                    <div class="fade-in group card-item">
+                        <div class="bg-bluerep-blue p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 hover:rotate-1 card-content">
+                            <h3 class="text-2xl font-lehigh text-bluerep-purple mb-4">Ushering</h3>
+                            <p class="text-bluerep-purple font-proxima mb-4 leading-relaxed card-text">
+                                Need a Front-of-House team? blueREP's seasoned ushers are available for hire for your own shows or productions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 34th Season Core Team Section -->
+    <section id="core-team" class="bg-gradient-to-br from-light-purple to-blue-50 py-24 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-20 left-1/4 w-20 h-20 border border-bluerep-blue rounded-full"></div>
+            <div class="absolute bottom-20 right-1/4 w-16 h-16 border border-bluerep-blue rounded-full"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <h2 id="core-team-title" class="text-4xl md:text-5xl font-lehigh text-bluerep-blue text-center mb-16">
+                    34th Season Core Team
+                </h2>
+                
+                <!-- Core Team Sections will be loaded dynamically from Supabase -->
+                <div id="core-team-sections">
+                    <!-- Sections will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white">
+    <footer class="bg-gray-900 text-white" style="background: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%); position: relative;">
         <div class="container mx-auto px-4 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Logo and Description -->
                 <div class="text-center md:text-left">
-                    <h3 class="text-2xl font-fjalla mb-4">blueREP</h3>
-                    <p class="font-proxima text-gray-300">
+                    <img src="/assets/footer_white.png" alt="blueREP Logo" class="h-24 w-auto mb-4 mx-auto md:mx-0">
+                    <p class="font-proxima text-white opacity-90">
                         The premier musical theatre organization of Ateneo de Manila University
                     </p>
                 </div>
                 
-                <!-- Quick Links -->
-                <div class="text-center md:text-left">
-                    <h4 class="text-lg font-lehigh mb-4">Quick Links</h4>
-                    <ul class="space-y-2 font-proxima text-gray-300">
-                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
-                        <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
-                        <li><a href="tickets.html" class="hover:text-white transition-colors">Tickets</a></li>
-                        <li><a href="productions.html" class="hover:text-white transition-colors">Productions</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Contact Info -->
-                <div class="text-center md:text-left">
-                    <h4 class="text-lg font-lehigh mb-4">Contact</h4>
-                    <div class="font-proxima text-gray-300 space-y-2">
-                        <p>Email: <a href="mailto:contact@bluerep.org" class="hover:text-white transition-colors">contact@bluerep.org</a></p>
-                        <p>Ateneo de Manila University</p>
+                                    <!-- Middle Column - Contact -->
+                    <div class="text-center md:text-left">
+                        <h4 class="text-lg font-lehigh mb-4 text-white">Contact</h4>
+                        <div class="font-proxima text-white opacity-90 space-y-2">
+                            <p>Email: <a href="mailto:bluerep.house@gmail.com" class="hover:text-white transition-colors">bluerep.house@gmail.com</a></p>
+                            <p>Ateneo de Manila University<br>
+                            Katipunan Avenue, Quezon City<br>
+                            Philippines</p>
+                        </div>
                     </div>
-                </div>
+                    
+                    <!-- Socials - 3rd Column -->
+                    <div class="text-center md:text-left">
+                        <h4 class="text-lg font-lehigh mb-4 text-white">Socials</h4>
+                        <div class="font-proxima text-white opacity-90 space-y-2">
+                                                        <div class="flex justify-center md:justify-start space-x-4">
+                                <!-- Facebook -->
+                                <a href="https://www.facebook.com/ateneobluerepertory" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-400 transition-colors transform hover:scale-110 active:scale-95" aria-label="Facebook">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                </a>
+                                <!-- Instagram -->
+                                <a href="https://www.instagram.com/ateneobluerepertory/?hl=en" target="_blank" rel="noopener noreferrer" class="text-white hover:text-pink-400 transition-colors transform hover:scale-110 active:scale-95" aria-label="Instagram">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                     </svg>
+                                </a>
+                                <!-- TikTok -->
+                                <a href="https://www.tiktok.com/@ateneobluerep" target="_blank" rel="noopener noreferrer" class="text-white hover:text-pink-500 transition-colors transform hover:scale-110 active:scale-95" aria-label="TikTok">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                                    </svg>
+                                </a>
+                                <!-- LinkedIn -->
+                                <a href="https://www.linkedin.com/company/ateneobluerepertory/?originalSubdomain=ph" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-600 transition-colors transform hover:scale-110 active:scale-95" aria-label="LinkedIn">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
             </div>
             
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="font-proxima text-gray-300">
-                    © 2024 Ateneo Blue Repertory. All rights reserved.
+            <!-- Bottom Bar -->
+            <div class="border-t border-white mt-8 pt-8 text-center">
+                <p class="font-proxima text-white opacity-75">
+                    © 2025 Ateneo Blue Repertory. All rights reserved.
                 </p>
             </div>
         </div>
@@ -607,39 +1055,92 @@
         }
         
         function openMobileMenu() {
+            console.log('Opening mobile menu');
+            
+            // Clear any inline styles that might prevent opening
+            mobileMenu.style.visibility = '';
+            mobileMenu.style.pointerEvents = '';
+            mobileMenu.style.transform = '';
+            mobileMenu.style.webkitTransform = '';
+            mobileMenu.style.mozTransform = '';
+            mobileMenu.style.msTransform = '';
+            
             mobileMenu.classList.add('open');
             mobileMenuOverlay.classList.add('active');
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
             mobileMenuOverlay.setAttribute('aria-hidden', 'false');
             
-            // Prevent body scroll when menu is open
+            // Store scroll position and prevent body scrolling
+            const scrollY = window.scrollY;
+            document.body.dataset.scrollY = scrollY;
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
             document.body.style.width = '100%';
             
             // Focus management for accessibility
-            closeMenuBtn.focus();
+            setTimeout(() => {
+                if (closeMenuBtn) {
+                    closeMenuBtn.focus();
+                }
+            }, 100);
             
             // Trap focus within the menu
             mobileMenu.addEventListener('keydown', handleMenuKeydown);
+            
+            // Force visibility of menu links immediately
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+            menuLinks.forEach(link => {
+                link.style.opacity = '1';
+                link.style.transform = 'translateX(0)';
+                link.style.pointerEvents = 'auto';
+                link.style.visibility = 'visible';
+            });
         }
         
         function closeMobileMenu() {
+            console.log('Closing mobile menu');
+            
+            // Remove open class
             mobileMenu.classList.remove('open');
             mobileMenuOverlay.classList.remove('active');
+            
+            // Reset ARIA attributes
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
             mobileMenuOverlay.setAttribute('aria-hidden', 'true');
             
-            // Restore body scroll
+            // Restore body scrolling
+            const scrollY = document.body.dataset.scrollY;
             document.body.style.overflow = '';
             document.body.style.position = '';
+            document.body.style.top = '';
             document.body.style.width = '';
             
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY));
+            }
+            
+            // Reset any inline styles on menu links
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+            menuLinks.forEach(link => {
+                link.style.opacity = '';
+                link.style.transform = '';
+                link.style.pointerEvents = '';
+                link.style.visibility = '';
+            });
+            
             // Return focus to menu button
-            mobileMenuBtn.focus();
+            setTimeout(() => {
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.focus();
+                }
+            }, 100);
             
             // Remove focus trap
             mobileMenu.removeEventListener('keydown', handleMenuKeydown);
+            
+            // Clear any stored data
+            delete document.body.dataset.scrollY;
         }
         
         function handleMenuKeydown(event) {
@@ -666,36 +1167,113 @@
         
         // Event listeners with cross-browser support
         if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-            // Touch event support for better mobile interaction
+            // Primary click event
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+            });
+            
+            // Touch event for better mobile support
             mobileMenuBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 toggleMobileMenu();
             }, { passive: false });
         }
         
         if (closeMenuBtn) {
-            closeMenuBtn.addEventListener('click', closeMobileMenu);
+            let isClosing = false;
+            
+            // Use only click event for close button to prevent conflicts
+            closeMenuBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (!isClosing) {
+                    isClosing = true;
+                    closeMobileMenu();
+                    
+                    // Reset after a short delay to prevent rapid clicks
+                    setTimeout(() => {
+                        isClosing = false;
+                    }, 300);
+                }
+            });
+            
+            // Add touch event with proper handling
             closeMenuBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                closeMobileMenu();
+                e.stopPropagation();
+                
+                if (!isClosing) {
+                    isClosing = true;
+                    closeMobileMenu();
+                    
+                    // Reset after a short delay to prevent rapid touches
+                    setTimeout(() => {
+                        isClosing = false;
+                    }, 300);
+                }
             }, { passive: false });
         }
         
         // Close mobile menu when clicking on overlay
         if (mobileMenuOverlay) {
-            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+            mobileMenuOverlay.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeMobileMenu();
+            });
+            
+            // Add touch support for overlay
+            mobileMenuOverlay.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeMobileMenu();
+            }, { passive: false });
         }
         
         // Close mobile menu when clicking on links
         const mobileMenuLinks = mobileMenu.querySelectorAll('a');
         mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', closeMobileMenu);
-            // Touch event support
-            link.addEventListener('touchstart', function(e) {
-                // Allow the link to work normally, just close the menu
-                setTimeout(closeMobileMenu, 100);
+            // Simple approach - just close menu after navigation
+            link.addEventListener('click', function(e) {
+                console.log('Mobile menu link clicked:', link.href);
+                console.log('Link text:', link.textContent);
+                console.log('Preventing default:', false);
+                
+                // Store the href for navigation
+                const targetHref = link.href;
+                
+                // Close menu first
+                closeMobileMenu();
+                
+                // Navigate to the target page after a short delay
+                setTimeout(() => {
+                    console.log('Navigating to:', targetHref);
+                    window.location.href = targetHref;
+                }, 100);
             });
+            
+            // Add touch support for menu links
+            link.addEventListener('touchstart', function(e) {
+                console.log('Mobile menu link touched:', link.href);
+                console.log('Link text:', link.textContent);
+                console.log('Preventing default:', false);
+                
+                // Store the href for navigation
+                const targetHref = link.href;
+                
+                // Close menu first
+                closeMobileMenu();
+                
+                // Navigate to the target page after a short delay
+                setTimeout(() => {
+                    console.log('Navigating to:', targetHref);
+                    window.location.href = targetHref;
+                }, 100);
+            }, { passive: false });
         });
         
         // Handle window resize to close menu on desktop
@@ -778,6 +1356,151 @@
             
             setActivePage();
         });
+        
+        // Supabase Integration
+        const SUPABASE_URL = 'https://mkyvwkwkvqibelypmuaw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1reXZ3a3drdnFpYmVseXBtdWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNjM5MzYsImV4cCI6MjA2OTYzOTkzNn0.1VVp26cZ-HbO_dr0Bpxjqa6D-ruay0DCn16v91p2kCM';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Load Impact Stats
+        async function loadImpactStats() {
+            try {
+                const { data, error } = await supabase
+                    .from('impact_stats')
+                    .select('*')
+                    .order('display_order', { ascending: true });
+                
+                if (error) {
+                    console.error('Error loading impact stats:', error);
+                    return;
+                }
+                
+                const impactCardsContainer = document.getElementById('impact-cards');
+                if (!impactCardsContainer) return;
+                
+                impactCardsContainer.innerHTML = '';
+                
+                data.forEach((stat, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card-item impact-card bg-white rounded-lg p-6 shadow-lg transition-all duration-300 fade-in';
+                    card.innerHTML = `
+                        <div class="card-content text-center">
+                            <div class="card-text">
+                                <div class="impact-value text-4xl font-fjalla text-bluerep-blue mb-4 transition-all duration-300">${stat.value}</div>
+                                <h3 class="impact-title text-xl font-lehigh text-bluerep-blue mb-3 transition-all duration-300">${stat.title}</h3>
+                                <p class="impact-description text-gray-600 font-proxima leading-relaxed transition-all duration-300">${stat.description}</p>
+                            </div>
+                        </div>
+                    `;
+                    impactCardsContainer.appendChild(card);
+                });
+                
+                // Trigger fade-in animations
+                setTimeout(() => {
+                    const fadeElements = impactCardsContainer.querySelectorAll('.fade-in');
+                    fadeElements.forEach(el => observer.observe(el));
+                }, 100);
+                
+            } catch (error) {
+                console.error('Error loading impact stats:', error);
+            }
+        }
+        
+        // Load Core Team Data
+        async function loadCoreTeamData() {
+            try {
+                // Load sections first
+                const { data: sections, error: sectionsError } = await supabase
+                    .from('core_team_sections')
+                    .select('*')
+                    .order('display_order', { ascending: true });
+                
+                if (sectionsError) {
+                    console.error('Error loading core team sections:', sectionsError);
+                    return;
+                }
+                
+                // Load members
+                const { data: members, error: membersError } = await supabase
+                    .from('core_team_members')
+                    .select('*')
+                    .order('display_order', { ascending: true });
+                
+                if (membersError) {
+                    console.error('Error loading core team members:', membersError);
+                    return;
+                }
+                
+                // Update main title
+                const mainTitle = sections.find(s => s.section_name === 'main_title');
+                if (mainTitle) {
+                    const titleElement = document.getElementById('core-team-title');
+                    if (titleElement) {
+                        titleElement.textContent = mainTitle.section_title;
+                    }
+                }
+                
+                // Render sections
+                const sectionsContainer = document.getElementById('core-team-sections');
+                if (!sectionsContainer) return;
+                
+                sectionsContainer.innerHTML = '';
+                
+                // Filter out main_title section and render others
+                const teamSections = sections.filter(s => s.section_name !== 'main_title');
+                
+                teamSections.forEach(section => {
+                    const sectionMembers = members.filter(m => m.section_name === section.section_name);
+                    
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.className = 'mb-16';
+                    
+                    // Determine grid layout based on section
+                    let gridClasses = 'grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 max-w-6xl mx-auto';
+                    if (section.section_name === 'the_square') {
+                        gridClasses = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-4xl mx-auto';
+                    }
+                    
+                    sectionDiv.innerHTML = `
+                        <h3 class="text-2xl md:text-3xl font-lehigh text-bluerep-blue text-center mb-8">
+                            ${section.section_title}
+                        </h3>
+                        <div class="${gridClasses}">
+                            ${sectionMembers.map((member, index) => `
+                                <div class="fade-in group">
+                                    <div class="text-center transform hover:scale-105 transition-all duration-300">
+                                        <div class="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-bluerep-blue to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 group-hover:rotate-3">
+                                            <span class="text-white font-lehigh text-lg">${index + 1}</span>
+                                        </div>
+                                        <h4 class="font-lehigh text-bluerep-blue mb-1 group-hover:text-purple-600 transition-colors">${member.member_name}</h4>
+                                        <p class="text-sm text-gray-600 font-proxima">${member.role}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    
+                    sectionsContainer.appendChild(sectionDiv);
+                });
+                
+                // Trigger fade-in animations
+                setTimeout(() => {
+                    const fadeElements = sectionsContainer.querySelectorAll('.fade-in');
+                    fadeElements.forEach(el => observer.observe(el));
+                }, 100);
+                
+            } catch (error) {
+                console.error('Error loading core team data:', error);
+            }
+        }
+        
+        // Initialize data loading when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            loadImpactStats();
+            loadCoreTeamData();
+        });
+
     </script>
 </body>
 </html>

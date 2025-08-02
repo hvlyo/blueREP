@@ -6,7 +6,7 @@
     <title>Buy Tickets - Ateneo Blue Repertory</title>
     <meta name="description" content="Purchase tickets for Ateneo Blue Repertory's upcoming productions and shows.">
     <link rel="icon" type="image/png" href="/assets/black_favicon.png">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom Styles -->
@@ -133,7 +133,7 @@
             top: 0 !important;
             left: 0;
             right: 0;
-            z-index: 1000;
+            z-index: 99999;
             width: 100%;
             transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
@@ -142,6 +142,71 @@
             /* Ensure sticky positioning works */
             display: block;
             height: auto;
+            /* Force navbar to stay on top of all content */
+            isolation: isolate;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+        }
+        
+        #navbar.scrolled {
+            background: #ededf7 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+        
+        /* Ensure sections don't interfere with sticky positioning */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Force navbar to be above all sections */
+        #navbar {
+            z-index: 99999 !important;
+        }
+        
+        /* Additional fixes for sticky header issues */
+        #navbar {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 99999 !important;
+            /* Force new stacking context */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            /* Ensure it's always on top */
+            isolation: isolate;
+        }
+        
+        /* Ensure no other elements interfere with sticky positioning */
+        body > *:not(#navbar) {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Remove any potential interference from sections */
+        section {
+            position: relative;
+            z-index: 1;
+            /* Ensure sections don't create new stacking contexts that interfere */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+        }
+        
+        /* Force navbar to always be on top */
+        #navbar {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 99999 !important;
+            background: transparent;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         #navbar.scrolled {
@@ -156,34 +221,43 @@
             transform: translateX(100%);
             -webkit-transform: translateX(100%);
             -moz-transform: translateX(100%);
+            -ms-transform: translateX(100%);
             transition: transform 0.4s ease-in-out;
             -webkit-transition: transform 0.4s ease-in-out;
             -moz-transition: transform 0.4s ease-in-out;
+            -o-transition: transform 0.4s ease-in-out;
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            /* iOS Safari viewport height fix */
+            /* Enhanced viewport height handling */
             height: 100vh !important;
+            height: 100dvh !important;
             height: -webkit-fill-available !important;
             height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
             min-height: 100vh !important;
+            min-height: 100dvh !important;
             min-height: -webkit-fill-available !important;
             width: 100vw !important;
+            width: 100dvw !important;
             right: 0;
             top: 0;
             display: -webkit-flex;
             display: -moz-flex;
+            display: -ms-flexbox;
             display: flex;
             -webkit-flex-direction: column;
             -moz-flex-direction: column;
+            -ms-flex-direction: column;
             flex-direction: column;
             -webkit-justify-content: flex-start;
             -moz-justify-content: flex-start;
+            -ms-flex-pack: start;
             justify-content: flex-start;
             -webkit-align-items: flex-start;
             -moz-align-items: flex-start;
+            -ms-flex-align: start;
             align-items: flex-start;
-            /* iOS Safari safe area support */
+            /* Enhanced safe area support */
             padding: 1.5rem;
             padding-top: calc(1.5rem + env(safe-area-inset-top));
             padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
@@ -196,13 +270,25 @@
             z-index: 9999;
             /* Ensure proper stacking context */
             -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
             transform-style: preserve-3d;
+            /* Prevent scrolling on body when menu is open */
+            overflow: hidden;
         }
         
         .mobile-menu.open {
             transform: translateX(0);
             -webkit-transform: translateX(0);
             -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        .mobile-menu:not(.open) {
+            transform: translateX(100%) !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
         
         /* Mobile Menu Overlay */
@@ -211,11 +297,22 @@
             transition: opacity 0.3s ease-in-out;
             -webkit-transition: opacity 0.3s ease-in-out;
             -moz-transition: opacity 0.3s ease-in-out;
+            -o-transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
         }
         
         .mobile-menu-overlay.active {
             opacity: 1;
             pointer-events: auto;
+            visibility: visible;
+        }
+        
+        .mobile-menu-overlay:not(.active) {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
         }
         
         /* Mobile Menu Content Styling */
@@ -556,7 +653,7 @@
         <div id="mobile-menu-overlay" class="mobile-menu-overlay md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none opacity-0 transition-opacity duration-300" aria-hidden="true"></div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-64 shadow-lg z-50" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-0 right-0 h-full w-full shadow-lg z-50" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
             <div class="mobile-menu-content">
                 <div class="mobile-menu-header">
                     <a href="index.html#top" class="cursor-pointer" aria-label="Go to homepage">
@@ -644,9 +741,68 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2024 Ateneo Blue Repertory. All rights reserved.</p>
+    <footer class="bg-gray-900 text-white" style="background: linear-gradient(135deg, #5E6BC0 0%, #1A174D 100%); position: relative;">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Logo and Description -->
+                <div class="text-center md:text-left">
+                    <img src="/assets/footer_white.png" alt="blueREP Logo" class="h-24 w-auto mb-4 mx-auto md:mx-0">
+                    <p class="font-proxima text-white opacity-90">
+                        The premier musical theatre organization of Ateneo de Manila University
+                    </p>
+                </div>
+                
+                                    <!-- Middle Column - Contact -->
+                    <div class="text-center md:text-left">
+                        <h4 class="text-lg font-lehigh mb-4 text-white">Contact</h4>
+                        <div class="font-proxima text-white opacity-90 space-y-2">
+                            <p>Email: <a href="mailto:bluerep.house@gmail.com" class="hover:text-white transition-colors">bluerep.house@gmail.com</a></p>
+                            <p>Ateneo de Manila University<br>
+                            Katipunan Avenue, Quezon City<br>
+                            Philippines</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Socials - 3rd Column -->
+                    <div class="text-center md:text-left">
+                        <h4 class="text-lg font-lehigh mb-4 text-white">Socials</h4>
+                        <div class="font-proxima text-white opacity-90 space-y-2">
+                                                        <div class="flex justify-center md:justify-start space-x-4">
+                                <!-- Facebook -->
+                                <a href="https://www.facebook.com/ateneobluerepertory" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-400 transition-colors transform hover:scale-110 active:scale-95" aria-label="Facebook">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                </a>
+                                <!-- Instagram -->
+                                <a href="https://www.instagram.com/ateneobluerepertory/?hl=en" target="_blank" rel="noopener noreferrer" class="text-white hover:text-pink-400 transition-colors transform hover:scale-110 active:scale-95" aria-label="Instagram">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                     </svg>
+                                </a>
+                                <!-- TikTok -->
+                                <a href="https://www.tiktok.com/@ateneobluerep" target="_blank" rel="noopener noreferrer" class="text-white hover:text-pink-500 transition-colors transform hover:scale-110 active:scale-95" aria-label="TikTok">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                                    </svg>
+                                </a>
+                                <!-- LinkedIn -->
+                                <a href="https://www.linkedin.com/company/ateneobluerepertory/?originalSubdomain=ph" target="_blank" rel="noopener noreferrer" class="text-white hover:text-blue-600 transition-colors transform hover:scale-110 active:scale-95" aria-label="LinkedIn">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-white mt-8 pt-8 text-center">
+                <p class="font-proxima text-white opacity-75">
+                    © 2025 Ateneo Blue Repertory. All rights reserved.
+                </p>
+            </div>
         </div>
     </footer>
 
@@ -669,39 +825,92 @@
         }
         
         function openMobileMenu() {
+            console.log('Opening mobile menu');
+            
+            // Clear any inline styles that might prevent opening
+            mobileMenu.style.visibility = '';
+            mobileMenu.style.pointerEvents = '';
+            mobileMenu.style.transform = '';
+            mobileMenu.style.webkitTransform = '';
+            mobileMenu.style.mozTransform = '';
+            mobileMenu.style.msTransform = '';
+            
             mobileMenu.classList.add('open');
             mobileMenuOverlay.classList.add('active');
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
             mobileMenuOverlay.setAttribute('aria-hidden', 'false');
             
-            // Prevent body scroll when menu is open
+            // Store scroll position and prevent body scrolling
+            const scrollY = window.scrollY;
+            document.body.dataset.scrollY = scrollY;
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
             document.body.style.width = '100%';
             
             // Focus management for accessibility
-            closeMenuBtn.focus();
+            setTimeout(() => {
+                if (closeMenuBtn) {
+                    closeMenuBtn.focus();
+                }
+            }, 100);
             
             // Trap focus within the menu
             mobileMenu.addEventListener('keydown', handleMenuKeydown);
+            
+            // Force visibility of menu links immediately
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+            menuLinks.forEach(link => {
+                link.style.opacity = '1';
+                link.style.transform = 'translateX(0)';
+                link.style.pointerEvents = 'auto';
+                link.style.visibility = 'visible';
+            });
         }
         
         function closeMobileMenu() {
+            console.log('Closing mobile menu');
+            
+            // Remove open class
             mobileMenu.classList.remove('open');
             mobileMenuOverlay.classList.remove('active');
+            
+            // Reset ARIA attributes
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
             mobileMenuOverlay.setAttribute('aria-hidden', 'true');
             
-            // Restore body scroll
+            // Restore body scrolling
+            const scrollY = document.body.dataset.scrollY;
             document.body.style.overflow = '';
             document.body.style.position = '';
+            document.body.style.top = '';
             document.body.style.width = '';
             
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY));
+            }
+            
+            // Reset any inline styles on menu links
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-nav a');
+            menuLinks.forEach(link => {
+                link.style.opacity = '';
+                link.style.transform = '';
+                link.style.pointerEvents = '';
+                link.style.visibility = '';
+            });
+            
             // Return focus to menu button
-            mobileMenuBtn.focus();
+            setTimeout(() => {
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.focus();
+                }
+            }, 100);
             
             // Remove focus trap
             mobileMenu.removeEventListener('keydown', handleMenuKeydown);
+            
+            // Clear any stored data
+            delete document.body.dataset.scrollY;
         }
         
         function handleMenuKeydown(event) {
@@ -726,45 +935,127 @@
             }
         }
         
-        // Event listeners with cross-browser support
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-            // Touch event support for better mobile interaction
-            mobileMenuBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                toggleMobileMenu();
-            }, { passive: false });
-        }
-        
-        if (closeMenuBtn) {
-            closeMenuBtn.addEventListener('click', closeMobileMenu);
-            closeMenuBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                closeMobileMenu();
-            }, { passive: false });
-        }
-        
-        // Close mobile menu when clicking on overlay
-        if (mobileMenuOverlay) {
-            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-        }
-        
-        // Close mobile menu when clicking on links
-        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', closeMobileMenu);
-            // Touch event support
-            link.addEventListener('touchstart', function(e) {
-                // Allow the link to work normally, just close the menu
-                setTimeout(closeMobileMenu, 100);
-            });
-        });
-        
-        // Handle window resize to close menu on desktop
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768 && mobileMenu.classList.contains('open')) {
-                closeMobileMenu();
+        // Initialize mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing mobile menu functionality');
+            
+            // Enhanced mobile menu button handling
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMobileMenu();
+                });
+                
+                // Touch event for better mobile support
+                mobileMenuBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMobileMenu();
+                }, { passive: false });
             }
+            
+            // Simplified close button handling to prevent flickering
+            if (closeMenuBtn) {
+                let isClosing = false;
+                
+                // Use only click event for close button to prevent conflicts
+                closeMenuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (!isClosing) {
+                        isClosing = true;
+                        closeMobileMenu();
+                        
+                        // Reset after a short delay to prevent rapid clicks
+                        setTimeout(() => {
+                            isClosing = false;
+                        }, 300);
+                    }
+                });
+                
+                // Add touch event with proper handling
+                closeMenuBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (!isClosing) {
+                        isClosing = true;
+                        closeMobileMenu();
+                        
+                        // Reset after a short delay to prevent rapid touches
+                        setTimeout(() => {
+                            isClosing = false;
+                        }, 300);
+                    }
+                }, { passive: false });
+            }
+            
+            // Close mobile menu when clicking on overlay
+            if (mobileMenuOverlay) {
+                mobileMenuOverlay.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeMobileMenu();
+                });
+                
+                // Add touch support for overlay
+                mobileMenuOverlay.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeMobileMenu();
+                }, { passive: false });
+            }
+            
+            // Close mobile menu when clicking on links
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                // Simple approach - just close menu after navigation
+                link.addEventListener('click', function(e) {
+                    console.log('Mobile menu link clicked:', link.href);
+                    console.log('Link text:', link.textContent);
+                    console.log('Preventing default:', false);
+                    
+                    // Store the href for navigation
+                    const targetHref = link.href;
+                    
+                    // Close menu first
+                    closeMobileMenu();
+                    
+                    // Navigate to the target page after a short delay
+                    setTimeout(() => {
+                        console.log('Navigating to:', targetHref);
+                        window.location.href = targetHref;
+                    }, 100);
+                });
+                
+                // Add touch support for menu links
+                link.addEventListener('touchstart', function(e) {
+                    console.log('Mobile menu link touched:', link.href);
+                    console.log('Link text:', link.textContent);
+                    console.log('Preventing default:', false);
+                    
+                    // Store the href for navigation
+                    const targetHref = link.href;
+                    
+                    // Close menu first
+                    closeMobileMenu();
+                    
+                    // Navigate to the target page after a short delay
+                    setTimeout(() => {
+                        console.log('Navigating to:', targetHref);
+                        window.location.href = targetHref;
+                    }, 100);
+                }, { passive: false });
+            });
+            
+            // Close mobile menu on window resize (if screen becomes desktop)
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 768 && mobileMenu.classList.contains('open')) {
+                    closeMobileMenu();
+                }
+            });
         });
         
         // Fade-in animation on scroll
